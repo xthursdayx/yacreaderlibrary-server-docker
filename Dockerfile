@@ -71,14 +71,14 @@ RUN \
     /src \
     /var/cache/apt \
     /tmp/* \
-	/yacr \
+    /yacr \
     /var/lib/apt/lists/* \
     /var/tmp/*
 
 ENV LANGUAGE="en_US.UTF-8" \
-	LC_ALL="en_US.UTF8" \
-	LANG="en_US.UTF-8" \
-	PATH="/YACReaderLibraryServer/bin/:${PATH}"
+    LC_ALL="en_US.UTF8" \
+    LANG="en_US.UTF-8" \
+    PATH="/YACReaderLibraryServer/bin/:${PATH}"
 
 RUN echo "export PATH=$PATH" > /etc/environment
 
