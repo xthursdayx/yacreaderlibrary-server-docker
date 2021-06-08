@@ -105,7 +105,7 @@ You can also view YACReaderLibraryServer's limited WebUI by pointing your web br
 
 * `http://SERVERIP:8080` (Replace `SERVERIP` with the correct value). 
 
-**Please note**: YACReaderLibraryServer does not have authentication installed by default, so it is not advisable to expose your server outside of your home network. If you wish to be able to access YACReaderLibraryServer from outside your local network please use a reverse ssl proxy, such as NGINX with an .htaccess file, or a locally-hosted VPN, such as OpenVPN to access your local network
+**Please note**: YACReaderLibraryServer does not have authentication installed by default, so it is not advisable to expose your server outside of your home network. If you wish to be able to access YACReaderLibraryServer from outside your local network please use a reverse ssl proxy, such as NGINX with an .htaccess file, or a locally-hosted VPN, such as OpenVPN to access your local network.
 
 
 If you appreciate my work please consider buying me a coffee, cheers! 😁
