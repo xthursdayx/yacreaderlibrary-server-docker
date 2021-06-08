@@ -12,7 +12,7 @@ YACReaderLibraryServer makes it easy to run a home comics server to serve your c
 
 ## Setup Instructions:
 
-Here are some examples to help you get started creating a container. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw. github.com/xthursdayx/docker-templates/blob/master/yacserver.xml) in Community Apps.
+Here are some examples to help you get started creating a container. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.github.com/xthursdayx/docker-templates/blob/master/yacserver.xml) in Community Apps.
 
 ### Docker CLI
 
