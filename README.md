@@ -80,7 +80,7 @@ In this instance `PUID=99` and `PGID=100`, to find yours using the following com
 
 ## Usage Instructions:
 
-#### To create a new YACReader comics library run the  following command from the CLI on your host machine, changing `<library-name>` as you wish:
+#### To create a new YACReader comics library run the  following command from the CLI on your host machine, changing `<library-name>` to whatever you want your library to be called:
 ````
 docker exec YACReaderLibraryServer YACReaderLibraryServer create-library <library-name> /comics
 ````
