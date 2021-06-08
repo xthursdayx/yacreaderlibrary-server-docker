@@ -1,0 +1,11 @@
+#!/bin/execlineb -P
+
+# Redirect stderr to stdout.
+fdmove -c 2 1
+
+# Drop privileges and set env
+s6-setuidgid abc
+s6-env HOME=/config
+
+# Start YACReaderLibraryServer
+/YACReaderLibraryServer/bin/YACReaderLibraryServer start
