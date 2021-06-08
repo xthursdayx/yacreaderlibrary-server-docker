@@ -82,23 +82,23 @@ In this instance `PUID=99` and `PGID=100`, to find yours using the following com
 
 #### To create a new YACReader comics library run the  following command from the CLI on your host machine, changing `<library-name>` as you wish:
 ````
-docker exec yacserver YACReaderLibraryServer create-library <library-name> /comics
+docker exec YACReaderLibraryServer YACReaderLibraryServer create-library <library-name> /comics
 ````
 #### To add an existing YACReader library:
 ````
-docker exec yacserver YACReaderLibraryServer add-library <library-name> /comics
+docker exec YACReaderLibraryServer YACReaderLibraryServer add-library <library-name> /comics
 ````
 #### To update your YACReader library (e.g. when you've added new comics):
 ````
-docker exec yacserver YACReaderLibraryServer update-library /comics
+docker exec YACReaderLibraryServer YACReaderLibraryServer update-library /comics
 ````
 #### To list all existing YACReader libraries
 ````
-docker exec yacserver YACReaderLibraryServer list-libraries
+docker exec YACReaderLibraryServer YACReaderLibraryServer list-libraries
 ````
 #### To remove a YACReader library
 ````
-docker exec yacserver YACReaderLibraryServer remove-library <library-name>
+docker exec YACReaderLibraryServer YACReaderLibraryServer remove-library <library-name>
 ````
 
 You can also view YACReaderLibraryServer's limited WebUI by pointing your web browser to: 
