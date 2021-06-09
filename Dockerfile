@@ -4,6 +4,7 @@ LABEL maintainer="xthursdayx"
 
 ARG YACR_TAG="9.8.1"
 ENV APPNAME="YACReaderLibraryServer"
+ENV HOME="/config"
 
 # install built & runtime packages
 RUN \
@@ -43,15 +44,15 @@ RUN \
  git clone -b master --single-branch https://github.com/YACReader/yacreader.git . && \
  git checkout $YACR_TAG
 
- # install unarr libraries
-RUN \
- cd /yacr/build/compressed_archive/unarr/ && \
- wget https://github.com/selmf/unarr/archive/master.zip && \
- unzip master.zip && \
- rm master.zip && \
- cd unarr-master/lzmasdk && \
- ln -s 7zTypes.h Types.h
-
+# # install unarr libraries
+#RUN \
+# cd /yacr/build/compressed_archive/unarr/ && \
+# wget https://github.com/selmf/unarr/archive/master.zip && \
+# unzip master.zip && \
+# rm master.zip && \
+# cd unarr-master/lzmasdk && \
+# ln -s 7zTypes.h Types.h
+#
 RUN \
  cd /yacr/build/compressed_archive/ && \
  git clone https://github.com/btolab/p7zip ./libp7zip
