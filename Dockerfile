@@ -7,7 +7,6 @@ ENV APPNAME="YACReaderLibraryServer"
 ENV HOME="/config"
 
 # install built & runtime packages
-ARG DEBIAN_FRONTEND=noninteractive
 RUN \
  apt-get update && \
  apt-get install -y \
@@ -82,7 +81,7 @@ RUN \
     /var/tmp/*
 
 ENV LANGUAGE="en_US.UTF-8" \
-    LC_ALL="en_US.UTF8" \
+    LC_ALL="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
     PATH="/YACReaderLibraryServer/bin/:${PATH}"
 
