@@ -28,6 +28,7 @@ RUN \
     libqt5svg5 \
     libwebp6 \
     p7zip-full \
+    p7zip-rar \
     qt5-image-formats-plugins \
     qtdeclarative5-dev \
     qtmultimedia5-dev \
