@@ -6,10 +6,13 @@ mkdir -p \
 	/comics/.yacreaderlibrary \
 	/config/.local/share/YACReader/YACReaderLibrary
 
-# set webserver port on first install
+# set YACReaderLibrary.ini
 if [ ! -f /config/.local/share/YACReader/YACReaderLibrary/YACReaderLibrary.ini ]; then
   cp /defaults/YACReaderLibrary.ini /config/.local/share/YACReader/YACReaderLibrary/YACReaderLibrary.ini
 fi
+
+# link p7zip libraries
+ln -sv /usr/lib/p7zip /YACReaderLibraryServer/lib/p7zip
 
 # permissions
 chown -R abc:abc \
