@@ -4,8 +4,7 @@
 fdmove -c 2 1
 
 # Drop privileges and set env
-s6-setuidgid abc
-s6-env HOME=/config
+with-contenv s6-setuidgid abc
 
 # Start YACReaderLibraryServer
-/YACReaderLibraryServer/bin/YACReaderLibraryServer start
+YACReaderLibraryServer start

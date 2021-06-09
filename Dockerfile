@@ -7,10 +7,9 @@ ENV APPNAME="YACReaderLibraryServer"
 ENV HOME="/config"
 
 # install built & runtime packages
-ARG DEBIAN_FRONTEND=noninteractive
 RUN \
  apt-get update && \
- apt-get install -y \
+ DEBIAN_FRONTEND=noninteractive apt-get install -y \
     git \
     qt5-default \
     libpoppler-qt5-dev \
@@ -27,6 +26,8 @@ RUN \
     libqt5sql5 \
     libqt5svg5 \
     libwebp6 \
+    p7zip-full \
+    p7zip-rar \
     qt5-image-formats-plugins \
     qtdeclarative5-dev \
     qtmultimedia5-dev \
@@ -43,24 +44,28 @@ RUN \
  git clone -b master --single-branch https://github.com/YACReader/yacreader.git . && \
  git checkout $YACR_TAG
 
- # install unarr libraries
+# # install unarr libraries
+#RUN \
+# cd /yacr/build/compressed_archive/unarr/ && \
+# wget https://github.com/selmf/unarr/archive/master.zip && \
+# unzip master.zip && \
+# rm master.zip && \
+# cd unarr-master/lzmasdk && \
+# ln -s 7zTypes.h Types.h
+#
 RUN \
- cd /yacr/build/compressed_archive/unarr/ && \
- wget https://github.com/selmf/unarr/archive/master.zip && \
- unzip master.zip && \
- rm master.zip && \
- cd unarr-master/lzmasdk && \
- ln -s 7zTypes.h Types.h
+ cd /yacr/build/compressed_archive/ && \
+ git clone https://github.com/btolab/p7zip ./libp7zip
 
- # build yacreaderlibraryserver
+# build yacreaderlibraryserver
 RUN \
  cd /yacr/build/YACReaderLibraryServer && \
  mkdir -p /YACReaderLibraryServer && \
- qmake PREFIX=/YACReaderLibraryServer "CONFIG+=server_standalone" YACReaderLibraryServer.pro && \
+ qmake PREFIX=/YACReaderLibraryServer "CONFIG+=7zip server_standalone" YACReaderLibraryServer.pro && \
  make  && \
  make install
 
- # cleanup
+# cleanup
 RUN \
  cd / && \
  apt-get clean && \
@@ -75,12 +80,11 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/*
 
+# set ENV
 ENV LANGUAGE="en_US.UTF-8" \
-    LC_ALL="en_US.UTF8" \
+    LC_ALL="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
     PATH="/YACReaderLibraryServer/bin/:${PATH}"
-
-RUN echo "export PATH=$PATH" > /etc/environment
 
 COPY root/ /
 
