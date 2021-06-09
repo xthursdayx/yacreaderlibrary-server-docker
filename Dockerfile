@@ -9,7 +9,7 @@ ENV HOME="/config"
 # install built & runtime packages
 RUN \
  apt-get update && \
- apt-get install -y \
+ DEBIAN_FRONTEND=noninteractive apt-get install -y \
     git \
     qt5-default \
     libpoppler-qt5-dev \
@@ -57,7 +57,7 @@ RUN \
  cd /yacr/build/compressed_archive/ && \
  git clone https://github.com/btolab/p7zip ./libp7zip
 
- # build yacreaderlibraryserver
+# build yacreaderlibraryserver
 RUN \
  cd /yacr/build/YACReaderLibraryServer && \
  mkdir -p /YACReaderLibraryServer && \
@@ -65,7 +65,7 @@ RUN \
  make  && \
  make install
 
- # cleanup
+# cleanup
 RUN \
  cd / && \
  apt-get clean && \
@@ -80,6 +80,7 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/*
 
+# set ENV
 ENV LANGUAGE="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
