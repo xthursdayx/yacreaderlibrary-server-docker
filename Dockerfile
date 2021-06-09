@@ -27,6 +27,7 @@ RUN \
     libqt5sql5 \
     libqt5svg5 \
     libwebp6 \
+    p7zip-full \
     qt5-image-formats-plugins \
     qtdeclarative5-dev \
     qtmultimedia5-dev \
@@ -52,11 +53,15 @@ RUN \
  cd unarr-master/lzmasdk && \
  ln -s 7zTypes.h Types.h
 
+RUN \
+ cd /yacr/build/compressed_archive/ && \
+ git clone https://github.com/btolab/p7zip ./libp7zip
+
  # build yacreaderlibraryserver
 RUN \
  cd /yacr/build/YACReaderLibraryServer && \
  mkdir -p /YACReaderLibraryServer && \
- qmake PREFIX=/YACReaderLibraryServer "CONFIG+=server_standalone" YACReaderLibraryServer.pro && \
+ qmake PREFIX=/YACReaderLibraryServer "CONFIG+=7zip server_standalone" YACReaderLibraryServer.pro && \
  make  && \
  make install
 
