@@ -85,8 +85,6 @@ ENV LANGUAGE="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
     PATH="/YACReaderLibraryServer/bin/:${PATH}"
 
-RUN echo "export PATH=$PATH" > /etc/environment
-
 COPY root/ /
 
 EXPOSE 8080
