@@ -4,7 +4,6 @@ LABEL maintainer="xthursdayx"
 
 ARG YACR_TAG="9.8.1"
 ENV APPNAME="YACReaderLibraryServer"
-ENV HOME="/config"
 
 # install built & runtime packages
 RUN \
