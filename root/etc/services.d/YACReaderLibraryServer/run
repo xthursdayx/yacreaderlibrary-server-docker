@@ -8,4 +8,4 @@ s6-setuidgid abc
 s6-env HOME=/config
 
 # Start YACReaderLibraryServer
-/YACReaderLibraryServer/bin/YACReaderLibraryServer start
+/YACReaderLibraryServer/bin/YACReaderLibraryServer --loglevel debug start
