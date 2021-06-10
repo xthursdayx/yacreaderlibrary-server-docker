@@ -56,8 +56,8 @@ RUN \
 RUN \
  cd /yacr/build/compressed_archive && \
 # git clone https://github.com/btolab/p7zip ./libp7zip
- wget "https://sourceforge.net/projects/p7zip/files/p7zip/16.02/p7zip_16.02_x86_linux_bin.tar.bz2" && \
- tar xjf /yacr/build/compressed_archive/p7zip_16.02_x86_linux_bin.tar.bz2 -C /yacr/build/compressed_archive && \
+ wget "https://sourceforge.net/projects/p7zip/files/p7zip/16.02/p7zip_16.02_src_all.tar.bz2" && \
+ tar xjf /yacr/build/compressed_archive/p7zip_16.02_src_all.tar.bz2 -C /yacr/build/compressed_archive && \
  mv /yacr/build/compressed_archive/p7zip_16.02 /yacr/build/compressed_archive/libp7zip
  
 # build yacreaderlibraryserver
