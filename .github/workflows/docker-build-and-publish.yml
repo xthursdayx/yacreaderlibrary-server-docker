@@ -52,7 +52,7 @@ jobs:
 
       # Login against a docker.io registry except on PR
       - name: Login to registry ${{ env.REGISTRY_2 }}
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -61,7 +61,7 @@ jobs:
       # Login against a ghcr.io registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY_1 }}
-        if: github.event_name != 'pull_request'
+        if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           registry: ${{ env.REGISTRY_1 }}
@@ -75,7 +75,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
