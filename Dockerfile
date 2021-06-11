@@ -4,6 +4,7 @@ LABEL maintainer="xthursdayx"
 
 ARG YACR_VERSION="9.8.1"
 ENV APPNAME="YACReaderLibraryServer"
+ENV HOME="/config"
 
 # install built & runtime packages
 RUN \
@@ -49,13 +50,13 @@ RUN \
     cd /src/git/ && \
     git checkout $YACR_VERSION && \
     cd /src/git/YACReaderLibraryServer && \
-    qmake PREFIX=/app "CONFIG+=server_standalone" YACReaderLibraryServer.pro && \
+    qmake PREFIX=/app "CONFIG+=unarr server_standalone" YACReaderLibraryServer.pro && \
     make  && \
     make install && \
     cd / && \
     apt-get clean && \
     apt-get autoremove && \
-    apt-get purge -y cmake git build-essential binutils && \
+    apt-get purge -y cmake git wget build-essential binutils && \
     apt-get -y autoremove && \
     rm -rf \
        /src \
