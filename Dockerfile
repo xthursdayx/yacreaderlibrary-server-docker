@@ -2,7 +2,7 @@ FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 
 LABEL maintainer="xthursdayx"
 
-ARG YACR_TAG="9.8.1"
+ARG YACR_VERSION="9.8.1"
 ENV APPNAME="YACReaderLibraryServer"
 ENV HOME="/config"
 
@@ -42,20 +42,10 @@ RUN \
  mkdir -p /yacr/build && \
  cd /yacr/build && \
  git clone -b master --single-branch https://github.com/YACReader/yacreader.git . && \
- git checkout $YACR_TAG
+ git checkout $YACR_VERSION
 
-# # install unarr libraries
-#RUN \
-# cd /yacr/build/compressed_archive/unarr/ && \
-# wget https://github.com/selmf/unarr/archive/master.zip && \
-# unzip master.zip && \
-# rm master.zip && \
-# cd unarr-master/lzmasdk && \
-# ln -s 7zTypes.h Types.h
-#
 RUN \
  cd /yacr/build/compressed_archive && \
-# git clone https://github.com/btolab/p7zip ./libp7zip
  wget "https://sourceforge.net/projects/p7zip/files/p7zip/16.02/p7zip_16.02_src_all.tar.bz2" && \
  tar xjf /yacr/build/compressed_archive/p7zip_16.02_src_all.tar.bz2 -C /yacr/build/compressed_archive && \
  mv /yacr/build/compressed_archive/p7zip_16.02 /yacr/build/compressed_archive/libp7zip
@@ -84,9 +74,7 @@ RUN \
     /var/tmp/*
 
 # set ENV
-ENV LANGUAGE="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8" \
-    LANG="en_US.UTF-8" \
+ENV LC_ALL="en_US.UTF-8" \
     PATH="/YACReaderLibraryServer/bin/:${PATH}"
 
 COPY root/ /
