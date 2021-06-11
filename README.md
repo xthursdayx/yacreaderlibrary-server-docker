@@ -1,5 +1,7 @@
+[![Docker Build and Publish](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml/badge.svg)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml)
+
 <p align="center">
-    <img src="https://raw.githubusercontent.com/xthursdayx/docker-templates/blob/master/images/yacreader-icon.png" alt="" width="150"/>  
+    <img src="https://raw.githubusercontent.com/xthursdayx/docker-templates/master/images/yacreader-icon.png" alt="" width="150"/>  
 </p>
 
 # YACReaderLibrary Server Docker
@@ -21,7 +23,7 @@ docker run -d \
   --name=YACReaderLibraryServer \
   -e PUID=99 \
   -e PGID=100 \
-  -e TZ=America/new_York \
+  -e TZ=America/New_York \
   -p 8080:8080 \
   -v /path/to/config:/config \
   -v /path/to/comic:/comics \
@@ -108,6 +110,12 @@ You can also view YACReaderLibraryServer's limited WebUI by pointing your web br
 **Please note**: YACReaderLibraryServer does not have authentication installed by default, so it is not advisable to expose your server outside of your home network. If you wish to be able to access YACReaderLibraryServer from outside your local network please use a reverse ssl proxy, such as NGINX with an .htaccess file, or a locally-hosted VPN, such as OpenVPN to access your local network.
 
 
-If you appreciate my work please consider buying me a coffee, cheers! 😁
+## Versions
+
+* **10.06.21:** - Complete rebuild and inital version
+
+## Donations
+
+If you appreciate my work please consider buying me a coffee, cheers! 😁
 
 <a href="https://www.buymeacoffee.com/xthursdayx"><img src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate" style="width:74px;height:auto;" width="74"></a>
