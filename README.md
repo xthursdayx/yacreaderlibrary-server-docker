@@ -1,9 +1,8 @@
-[![Docker Build and Publish](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml/badge.svg)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml)
-
 <p align="center">
     <img src="https://raw.githubusercontent.com/xthursdayx/docker-templates/master/images/yacreader-icon.png" alt="" width="150"/>  
 </p>
 
+[![Docker Build and Publish](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml/badge.svg)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml)
 # YACReaderLibrary Server Docker
 
 Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer). 
