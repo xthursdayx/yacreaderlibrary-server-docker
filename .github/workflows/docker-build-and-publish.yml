@@ -76,10 +76,10 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
           tags: |
-             ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
-             ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+             ${{ env.REGISTRY_2 }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+             ${{ env.REGISTRY_1 }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
          #   ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
-       #  labels: ${{ steps.meta.outputs.labels }}
+      #  labels: ${{ steps.meta.outputs.labels }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
