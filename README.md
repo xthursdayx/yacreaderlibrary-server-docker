@@ -108,10 +108,12 @@ You can also view YACReaderLibraryServer's limited WebUI by pointing your web br
 
 **Please note**: YACReaderLibraryServer does not have authentication installed by default, so it is not advisable to expose your server outside of your home network. If you wish to be able to access YACReaderLibraryServer from outside your local network please use a reverse ssl proxy, such as NGINX with an .htaccess file, or a locally-hosted VPN, such as OpenVPN to access your local network.
 
-
 ## Versions
 
-* **10.06.21:** - Complete rebuild and inital version
+* **11.06.21:** - Bug fix and patch on main p7zip branch.
+
+* **10.06.21:** - Complete rebuild and inital version.
+
 
 ## Donations
 
