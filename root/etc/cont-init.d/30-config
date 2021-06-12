@@ -12,13 +12,11 @@ if [ ! -f /config/.local/share/YACReader/YACReaderLibrary/YACReaderLibrary.ini ]
 fi
 
 # link p7zip libraries
-if [ ! -d /YACReaderLibraryServer/lib/p7zip ]; then
-  ln -s /usr/lib/p7zip /YACReaderLibraryServer/lib/p7zip
-fi
+ln -s /usr/lib/p7zip /YACReaderLibraryServer/lib/p7zip
 
 # permissions
 chown -R abc:abc \
 		/config \
 		/defaults \
 		/YACReaderLibraryServer \
-		/comics	
+		/comics
