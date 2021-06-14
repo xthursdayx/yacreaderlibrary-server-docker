@@ -14,7 +14,7 @@ fi
 # link p7zip libraries
 ln -s /usr/lib/p7zip /YACReaderLibraryServer/lib/p7zip
 
-# permissions
+# fix permissions
 chown -R abc:abc \
 		/config \
 		/defaults \
