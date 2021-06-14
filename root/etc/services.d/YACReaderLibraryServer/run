@@ -7,4 +7,4 @@ fdmove -c 2 1
 with-contenv s6-setuidgid abc
 
 # Start YACReaderLibraryServer
-/app/bin/YACReaderLibraryServer start
+YACReaderLibraryServer start
