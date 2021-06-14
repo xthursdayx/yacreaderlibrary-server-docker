@@ -17,15 +17,6 @@ on:
   release:
     types: [released]
 
-# env variables
-env:
-  # docker.io
-  REGISTRY_1: docker.io
-  # ghcr.io
-  REGISTRY_2: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE: ${{ github.repository }}
-
 # jobs to run
 jobs:
 
@@ -46,8 +37,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ env.IMAGE }}
-            ghcr.io/${{ env.IMAGE }}
+            ${{ github.repository }}
+            ghcr.io/${{ github.repository }}
           tags: |
             type=ref,prefix={{branch}}-,event=branch
             type=ref,event=pr
