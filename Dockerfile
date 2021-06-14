@@ -39,22 +39,21 @@ RUN \
 
 # fetch source
 RUN \
- mkdir -p /yacr/build && \
- cd /yacr/build && \
- git clone -b master --single-branch https://github.com/YACReader/yacreader.git . && \
+ git clone -b master --single-branch https://github.com/YACReader/yacreader.git /src/git && \
+ cd /src/git && \
  git checkout $YACR_VERSION
 
+# install p7zip libraries
 RUN \
- cd /yacr/build/compressed_archive && \
+ cd compressed_archive && \
  wget "https://sourceforge.net/projects/p7zip/files/p7zip/16.02/p7zip_16.02_src_all.tar.bz2" && \
- tar xjf /yacr/build/compressed_archive/p7zip_16.02_src_all.tar.bz2 -C /yacr/build/compressed_archive && \
- mv /yacr/build/compressed_archive/p7zip_16.02 /yacr/build/compressed_archive/libp7zip
+ tar xjf /src/git/compressed_archive/p7zip_16.02_src_all.tar.bz2 -C /src/git/compressed_archive && \
+ mv /src/git/compressed_archive/p7zip_16.02 /src/git/compressed_archive/libp7zip
  
 # build yacreaderlibraryserver
 RUN \
- cd /yacr/build/YACReaderLibraryServer && \
- mkdir -p /YACReaderLibraryServer && \
- qmake PREFIX=/YACReaderLibraryServer "CONFIG+=7zip server_standalone" YACReaderLibraryServer.pro && \
+ cd /src/git/YACReaderLibraryServer && \
+ qmake PREFIX=/app "CONFIG+=7zip server_standalone" YACReaderLibraryServer.pro && \
  make  && \
  make install
 
@@ -69,7 +68,6 @@ RUN \
     /src \
     /var/cache/apt \
     /tmp/* \
-    /yacr \
     /var/lib/apt/lists/* \
     /var/tmp/*
 
