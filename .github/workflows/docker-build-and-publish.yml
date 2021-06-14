@@ -15,7 +15,7 @@ on:
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   release:
-    types: [published]
+    types: [released]
 
 # env variables
 env:
