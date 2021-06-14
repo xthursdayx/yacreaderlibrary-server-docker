@@ -45,7 +45,7 @@ RUN \
 
 # install p7zip libraries
 RUN \
- cd compressed_archive && \
+ cd /src/git/compressed_archive && \
  wget "https://sourceforge.net/projects/p7zip/files/p7zip/16.02/p7zip_16.02_src_all.tar.bz2" && \
  tar xjf /src/git/compressed_archive/p7zip_16.02_src_all.tar.bz2 -C /src/git/compressed_archive && \
  mv /src/git/compressed_archive/p7zip_16.02 /src/git/compressed_archive/libp7zip
