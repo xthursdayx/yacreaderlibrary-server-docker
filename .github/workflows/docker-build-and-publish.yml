@@ -9,9 +9,8 @@ on:
   push:
     branches: 
       # Push events on main branch
-      - 'main'
-      # - 'p7zip'
-      # - 'unarr'
+      - 'p7zip'
+      - 'unarr'
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   release:
@@ -40,13 +39,12 @@ jobs:
             ${{ github.repository }}
             ghcr.io/${{ github.repository }}
           tags: |
-            type=ref,prefix={{branch}}-,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-          flavor: |
-            latest=auto
+            type=raw,prefix=,suffix=,value=
+            type=ref,event=branch
+            type=ref,prefix={{branch}}-,event=pr
+            type=semver,prefix={{branch}}-,pattern={{version}}
+            type=semver,prefix={{branch}}-,pattern={{major}}.{{minor}}
+            type=semver,prefix={{branch}}-,pattern={{major}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
