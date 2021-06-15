@@ -10,7 +10,7 @@
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr?label=unarr%20image%20size)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?sort=semver)
 
-Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 18.04 LTS cloud image][https://cloud-images.ubuntu.com/] and [S6 overlay](https://github.com/just-containers/s6-overlay). 
+Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 18.04 LTS cloud image](https://cloud-images.ubuntu.com/) and [S6 overlay](https://github.com/just-containers/s6-overlay). 
 
 [YACReader](https://www.yacreader.com/) is the best comic reader and comic manager available, with support for cbr, cbz, zip, and rar comic files. 
 
