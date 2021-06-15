@@ -2,13 +2,13 @@
     <img src="https://raw.githubusercontent.com/xthursdayx/docker-templates/master/xthursdayx/images/yacreader-icon.png" alt="" width="150"/>  
 </p>
 
+# YACReaderLibrary Server Docker
+
 [![Docker Build and Publish](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml/badge.svg)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml)
 ![Docker Pulls](https://img.shields.io/docker/pulls/xthursdayx/yacreaderlibrary-server-docker)
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/p7zip?label=p7zip%20image%20size)
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr?label=unarr%20image%20size)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?sort=semver)
-
-# YACReaderLibrary Server Docker
 
 Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer). 
 
