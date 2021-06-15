@@ -67,13 +67,12 @@ Container images are configured using parameters passed at runtime (such as thos
 | Parameter | Function |
 | :----: | --- |
 | `-p 8080` | HTTP access to YACReaderLibraryServer. |
-| `-p 8080` | HTTP access to YACReaderLibraryServer. |
 | `-e PUID=99` | for UserID - see below for more information. |
 | `-e PGID=100` | for GroupID - see below for more information. |
 | `-e TZ=America/New_York` | Specify a timezone to use, e.g. America/New_York. |
 | `-v /config` | Directory where YACReaderLibraryServer's configuration and log files will be stored. |
 | `-v /comics` | The directory where YACReaderLibraryServer will look for your comics. |
-|  `tag` | The docker tag will pull your chosen version YACReaderLibraryServer, the options are `pzip` or `unarr` (default). |
+|  `tag` | (Optional) The docker tag will pull your chosen version YACReaderLibraryServer, the options are `pzip` or `unarr`/`latest` (default). |
 
 ### User / Group Identifiers
 
