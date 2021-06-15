@@ -2,7 +2,7 @@
     <img src="https://raw.githubusercontent.com/xthursdayx/docker-templates/master/xthursdayx/images/yacreader-icon.png" alt="" width="150"/>  
 </p>
 
-# YACReaderLibrary Server Docker
+# YACReaderLibraryServer Docker
 
 [![Docker Build and Publish](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml/badge.svg)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml)
 ![Docker Pulls](https://img.shields.io/docker/pulls/xthursdayx/yacreaderlibrary-server-docker)
@@ -10,19 +10,23 @@
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr?label=unarr%20image%20size)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?sort=semver)
 
-Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer). 
+Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 18.04 LTS cloud image][https://cloud-images.ubuntu.com/] and [S6 overlay](https://github.com/just-containers/s6-overlay). 
 
 [YACReader](https://www.yacreader.com/) is the best comic reader and comic manager available, with support for cbr, cbz, zip, and rar comic files. 
 
-YACReaderLibraryServer makes it easy to run a home comics server to serve your comics to any device running a YACReader client (including Windows, MacOS, Linux, and iOS).
+YACReaderLibraryServer makes it easy to run a home comics server to serve your comics to any device running a YACReader client (including [Windows, MacOS, and Linux](https://www.yacreader.com/downloads) as well [the YACReader iOS app](https://ios.yacreader.com/).
 
 ## Setup Instructions:
 
-You can choose to install one of two versions of the YACReaderLibraryServer docker image, which have two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:pzip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`
+You can choose to install one of two versions of the YACReaderLibraryServer docker image, which use two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:pzip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`.
 
-For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, which is the default installation, however there is some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and update your comics library(s) significantly faster than the version complied with unarr, so the choice is yours.
+For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, which is the default installation. It should be noted, however, that as of [version 1.0.1](https://github.com/selmf/unarr/releases/tag/v1.0.1), `unarr` supports fewer formats than `p7zip`, notably RAR5. There is also some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and create your comics library(s) faster than the version complied with `unarr`, so the choice is yours. In practice, this is rarely an issue as the vast majority of comic books use either zip or RAR4 compression, which is handled nicely by this backend, and after the iniatial library creation, library updates proceed smoothly with either decompression backend.
 
-Here are some examples to help you get started creating a container. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/yacserver.xml) in Community Apps.
+If you would like to use the default `unarr` backend, then you do not need to add a tag to `xthursdayx/yacreaderlibrary-server-docker` since it will default to the `latest`/`unarr` tag.
+
+The docker images are also available to be pulled from the GitHub container registry: `ghcr.io/xthursdayx/yacreaderlibrary-server-docker`.
+
+Here are some examples to help you get started creating a container from this image. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/yacserver.xml) in Community Apps.
 
 ### Docker CLI
 
