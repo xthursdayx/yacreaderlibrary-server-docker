@@ -84,7 +84,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' && github.ref != 'refs/heads/dev' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-             BRANCH=${{ env.BRANCH }}
+          
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
