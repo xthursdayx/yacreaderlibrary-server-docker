@@ -18,9 +18,9 @@ YACReaderLibraryServer makes it easy to run a home comics server to serve your c
 
 ## Setup Instructions:
 
-You can choose to install one of two versions of the YACReaderLibraryServer docker image, which have two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the image tags `xthursdayx:yacreaderlibrary-server-docker:pzip` or `xthursdayx:yacreaderlibrary-server-docker:unarr`
+You can choose to install one of two versions of the YACReaderLibraryServer docker image, which have two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:pzip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`
 
-For the best stability and genberal quality, it is recommended that you install YACReaderLibraryServer with `unarr`, which is the default installation, however there is some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and update your comics library(s) significantly faster than the version complied with unarrr, so the choice is yours.
+For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, which is the default installation, however there is some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and update your comics library(s) significantly faster than the version complied with unarr, so the choice is yours.
 
 Here are some examples to help you get started creating a container. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/yacserver.xml) in Community Apps.
 
