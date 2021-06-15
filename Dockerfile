@@ -10,13 +10,13 @@ ENV HOME="/config"
 RUN \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-       build-essential \
-       binutils \
        cmake \
        git \
+       qt5-default \
        libbz2-dev \
        liblzma-dev \
        libpoppler-qt5-dev \
+       libpoppler-qt5-1 \
        libqt5core5a \
        libqt5gui5 \
        libqt5multimedia5 \
@@ -29,14 +29,16 @@ RUN \
        libqt5sql5 \
        libqt5svg5 \
        libwebp6 \
-       qt5-default \
        qt5-image-formats-plugins \
        qt5-qmake \
        qtdeclarative5-dev \
        qtmultimedia5-dev \
        sqlite3 \
+       unzip \
        wget \
-       zlib1g-dev && \
+       zlib1g-dev \
+       build-essential \
+       binutils && \
 # install unarr libraries
     git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
     cd /tmp/unarr && \
