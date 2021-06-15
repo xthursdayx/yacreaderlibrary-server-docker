@@ -31,6 +31,10 @@ jobs:
         uses: actions/checkout@v2
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
+      
+      - name: What
+        run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v3
@@ -39,12 +43,12 @@ jobs:
             ${{ github.repository }}
             ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,prefix=,suffix=,value=
+            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             type=ref,event=branch
             type=ref,prefix={{branch}}-,event=pr
             type=semver,prefix={{branch}}-,pattern={{version}}
             type=semver,prefix={{branch}}-,pattern={{major}}.{{minor}}
-            type=semver,prefix={{branch}}-,pattern={{major}}
+            type=semver,prefix={{branch}}-,pattern={{major}}            
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -80,6 +84,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' && github.ref != 'refs/heads/dev' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
+          build-args: |
+             BRANCH=${{ env.BRANCH }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
