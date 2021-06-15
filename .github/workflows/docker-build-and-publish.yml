@@ -11,8 +11,6 @@ on:
       # Push events on main branch
       - 'p7zip'
       - 'unarr'
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*-*****' ]
   release:
     types: [released]
 
