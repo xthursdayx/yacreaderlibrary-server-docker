@@ -32,15 +32,13 @@ docker run -d \
 
 ### docker-compose
 
-Compatible with docker-compose v2 schemas.
-
 ```yaml
 ---
-version: "2.1"
+version: "3"
 services:
-  yacreaderlibraryserver:
-    image: xthursdayx/yacreaderlibrary-server-docker
+  yacreaderlibrary-server-docker:
     container_name: YACReaderLibraryServer
+    image: xthursdayx/yacreaderlibrary-server-docker
     environment:
       - PUID=99
       - PGID=100
