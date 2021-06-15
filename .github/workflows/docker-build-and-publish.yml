@@ -12,7 +12,7 @@ on:
       - 'p7zip'
       - 'unarr'
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*-*****' ]
   release:
     types: [released]
 
