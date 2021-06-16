@@ -48,7 +48,7 @@ docker run -d \
 
 ```yaml
 ---
-version: "3"
+version: "2.1"
 services:
   yacreaderlibrary-server-docker:
     container_name: YACReaderLibraryServer
