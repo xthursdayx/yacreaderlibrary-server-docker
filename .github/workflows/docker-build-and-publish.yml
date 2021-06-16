@@ -5,6 +5,10 @@ name: Docker Build and Publish
 on:
   # manual workflow run
   workflow_dispatch:
+    inputs: |
+      ${{ refs/heads/unarr }}
+      ${{ refs/deads/7zip }}
+      ${{ refs/deads/testing }}
   # Sequence of patterns matched against refs/heads
   push:
     branches: 
@@ -13,7 +17,7 @@ on:
       - 'unarr'
   pull_request:
     branches:
-      - 'main'
+      - 'unarr'
   release:
     types: [released]
 
@@ -81,9 +85,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64, linmux/arm37
           push: ${{ github.event_name != 'pull_request' && github.ref != 'refs/heads/dev' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}-${{ steps.dockerbuild.outputs.platform }]
           labels: ${{ steps.meta.outputs.labels }}
           
       - name: Image digest
