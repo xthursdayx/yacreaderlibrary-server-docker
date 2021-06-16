@@ -27,7 +27,7 @@ If you would like to use the default `unarr` backend, then you do not need to ad
 
 The docker images are also available to be pulled from the GitHub container registry: `ghcr.io/xthursdayx/yacreaderlibrary-server-docker`
 
-Here are some examples to help you get started creating a container from this image. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/yacserver.xml) in Community Apps.
+Here are some examples to help you get started creating a container from this image. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/xthursdayx/yacserver.xml) in Community Apps.
 
 ### Docker CLI
 
