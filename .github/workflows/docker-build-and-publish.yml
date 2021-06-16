@@ -11,12 +11,14 @@ on:
       # Push events on main branch
       - 'p7zip'
       - 'unarr'
+  pull_request:
+    branches:
+      - 'main'
   release:
     types: [released]
 
 # jobs to run
 jobs:
-
   docker-image-build:
     runs-on: ubuntu-latest
     permissions:
@@ -79,6 +81,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' && github.ref != 'refs/heads/dev' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
