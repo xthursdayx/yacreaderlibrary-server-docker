@@ -4,11 +4,12 @@
 
 # YACReaderLibraryServer Docker
 
-[![Docker Build and Publish](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml/badge.svg)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/actions/workflows/docker-build-and-publish.yml)
-![Docker Pulls](https://img.shields.io/docker/pulls/xthursdayx/yacreaderlibrary-server-docker)
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/p7zip?label=p7zip%20image%20size)
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr?label=unarr%20image%20size)
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?sort=semver)
+[![Docker Builds](https://img.shields.io/github/workflow/status/xthursdayx/yacreaderlibrary-server-docker/Docker%20Build%20and%20Publish?logo=githubactions&label=Image%20Builds&style=for-the-badge)](https://raw.githubusercontent.com/xthursdayx/yacreaderlibrary-server-docker/unarr/.github/workflows/docker-build-and-publish.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xthursdayx/yacreaderlibrary-server-docker?label=pulls&logo=docker&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr?label=unarr%20image&logo=ubuntu&size&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker:unarr)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/p7zip?label=p7zip%20image%20size&logo=ubuntu&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker:p7zip)
+[![GitHub Release](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?style=for-the-badge&logo=github)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/releases)
+[![GitHub](https://img.shields.io/static/v1.svg?style=for-the-badge&label=xthursdayx&message=GitHub&logo=github)](https://github.com/xthursdayx "view the source for all of my repositories.")
 
 Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 18.04 LTS cloud image](https://cloud-images.ubuntu.com/) and [S6 overlay](https://github.com/just-containers/s6-overlay). 
 
