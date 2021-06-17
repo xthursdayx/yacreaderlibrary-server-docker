@@ -9,12 +9,12 @@ ARG YACR_VERSION="9.8.1"
 # env variables
 ENV APPNAME="YACReaderLibraryServer"
 ENV HOME="/config"
-ARG DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND="noninteractive"
 
 # install Qt5 and dependencies
 RUN \
     apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
        binutils \
        build-essential \
        cmake \
@@ -47,7 +47,7 @@ RUN \
     ## install unarr libraries ##
     git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
     cd /tmp/unarr && \
-#    git checkout $UNARR_VERSION && \
+    ## git checkout $UNARR_VERSION && \
     mkdir -p build && \
     cd build && \
     cmake -DENABLE_7Z=ON .. && \
@@ -63,10 +63,9 @@ RUN \
     make install && \
     ## clean up ##
     cd / && \
-    apt-get clean && \
-    apt-get autoremove && \
     apt-get purge -y cmake git wget build-essential binutils && \
     apt-get -y autoremove && \
+    apt-get clean && \
     rm -rf \
        /src \
        /tmp/* \
