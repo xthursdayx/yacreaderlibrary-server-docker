@@ -115,11 +115,38 @@ docker exec YACReaderLibraryServer YACReaderLibraryServer list-libraries
 docker exec YACReaderLibraryServer YACReaderLibraryServer remove-library <library-name>
 ````
 
-You can also view YACReaderLibraryServer's limited WebUI by pointing your web browser to: 
+## Accessing YACReaderLibraryServer 
+
+You can access your YACReaderLibraryServer by pointing your YACReader app to: 
 
 * `http://SERVERIP:8080` (Replace `SERVERIP` with the correct value). 
 
 **Please note**: YACReaderLibraryServer does not have authentication installed by default, so it is not advisable to expose your server outside of your home network. If you wish to be able to access YACReaderLibraryServer from outside your local network please use a reverse ssl proxy, such as NGINX with an .htaccess file, or a locally-hosted VPN, such as OpenVPN to access your local network.
+
+## Updating Info
+
+This image is static, versioned, and requires an image update and container recreation to update version of YACReaderLibraryServer running inside. 
+
+Here are the instructions for updating containers:
+### Via Docker Compose
+
+* Update all images: `docker-compose pull`
+  * or update a single image: `docker-compose pull YACReaderLibraryServer`
+* Let compose update all containers as necessary: `docker-compose up -d`
+  * or update a single container: `docker-compose up -d YACReaderLibraryServer`
+* You can also remove the old dangling images: `docker image prune`
+
+### Via Docker Run
+
+* Update the image: `docker pull xthursdayx/YACReaderLibraryServer`
+* Stop the running container: `docker stop YACReaderLibraryServer`
+* Delete the container: `docker rm YACReaderLibraryServer`
+* Recreate a new container with the same docker run parameters as described above (if mapped correctly, your YACReaderLibraryServer database and library will be preserved).
+* You can also remove the old dangling images: `docker image prune`
+
+### Image Update Notifications - Diun (Docker Image Update Notifier)
+
+* You can use [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended.
 
 ## Versions
 
