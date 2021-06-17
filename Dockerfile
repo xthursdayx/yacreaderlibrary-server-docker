@@ -1,21 +1,18 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 
-LABEL maintainer="xthursdayx"
-
 # package versions
 ARG YACR_VERSION="9.8.1"
-#ARG UNARR_VERSION="1.0.1"
 
 # env variables
+ARG DEBIAN_FRONTEND="noninteractive"
 ENV APPNAME="YACReaderLibraryServer"
 ENV HOME="/config"
-ARG DEBIAN_FRONTEND="noninteractive"
+LABEL maintainer="xthursdayx"
 
 # install Qt5 and dependencies
 RUN \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-       binutils \
        build-essential \
        cmake \
        git \
@@ -47,7 +44,6 @@ RUN \
     ## install unarr libraries ##
     git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
     cd /tmp/unarr && \
-    ## git checkout $UNARR_VERSION && \
     mkdir -p build && \
     cd build && \
     cmake -DENABLE_7Z=ON .. && \
@@ -63,7 +59,7 @@ RUN \
     make install && \
     ## clean up ##
     cd / && \
-    apt-get purge -y cmake git wget build-essential binutils && \
+    apt-get purge -y cmake git wget build-essential && \
     apt-get -y autoremove && \
     apt-get clean && \
     rm -rf \
