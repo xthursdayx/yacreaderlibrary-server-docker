@@ -4,7 +4,7 @@ LABEL maintainer="xthursdayx"
 
 # package versions
 ARG YACR_VERSION="9.8.1"
-ARG UNARR_VERSION="1.0.1"
+#ARG UNARR_VERSION="1.0.1"
 
 # env variables
 ENV APPNAME="YACReaderLibraryServer"
@@ -47,7 +47,7 @@ RUN \
     ## install unarr libraries ##
     git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
     cd /tmp/unarr && \
-    git checkout $UNARR_VERSION && \
+#    git checkout $UNARR_VERSION && \
     mkdir -p build && \
     cd build && \
     cmake -DENABLE_7Z=ON .. && \
