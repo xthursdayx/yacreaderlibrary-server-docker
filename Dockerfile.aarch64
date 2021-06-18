@@ -26,7 +26,7 @@ RUN \
        libpoppler-qt5-1 \
        libqt5core5a \
        libqt5gui5 \
-       libqt5multimedia5 
+       libqt5multimedia5 \
        libqt5network5 \
        libqt5opengl5 \
        libqt5qml5 \
