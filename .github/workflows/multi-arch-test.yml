@@ -1,0 +1,116 @@
+# workflow name
+name: Multiarch Test
+
+# on events
+on:
+  # manual workflow run
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [bionic]
+        docker_arch: [amd64, i386, arm32v7, arm64v8]
+      container: xthursdayx/yacreaderlibrary-server-docker-dev-${{ matrix.os }}-${{ matrix.arch }}
+    steps:
+    - name: Register binfmt_misc entry for qemu-user-static 
+      env:
+        DOCKER_ARCH: ${{ matrix.docker_arch }}
+      run: |
+        case ${DOCKER_ARCH} in
+        	amd64|i386)
+        		QEMU_ARCH=
+        		;;
+        	arm32*)
+        		QEMU_ARCH=arm
+        		;;
+        	arm64*)
+        		QEMU_ARCH=aarch64
+        		;;
+        	*)
+        		QEMU_ARCH=${DOCKER_ARCH}
+        		;;
+        esac
+        if [ -n "${QEMU_ARCH}" ]; then
+        	docker rm $(docker create --volume qemu-user-static:/usr/bin multiarch/qemu-user-static:${QEMU_ARCH} dummy)
+        	docker run --rm --privileged --volume qemu-user-static:/usr/bin:ro multiarch/qemu-user-static:register --persistent yes
+        fi
+    - name: Build
+      env:
+        DOCKER_ARCH: ${{ matrix.docker_arch }}
+      run: |
+        docker run --rm --interactive "${DOCKER_ARCH}/alpine:latest" <<-'EOF'
+        	echo 'Hello World!'
+        EOF
+        
+        
+        
+        
+> +    steps:
+> +      - name: checkout
+> +        uses: actions/checkout@v1
+> +      - name: build and test
+> +        if: ${{ matrix.arch == '' || matrix.arch == '-i386' }}
+> +        run: make test
+> +      - name: build
+> +        if: ${{ matrix.arch != '' && matrix.arch != '-i386' }}
+> +        run: make test-progs
+> +      - name: archive
+> +        if: ${{ matrix.arch != '' && matrix.arch != '-i386' }}
+> +        run: >
+> +          tar cfv binaries.tar
+> +          Makefile*
+> +          libmpathcmd/*.so* libmultipath/*.so*
+> +          tests/lib tests/*-test tests/Makefile tests/*.so*
+> +      - uses: actions/upload-artifact@v1
+> +        if: ${{ matrix.arch != '' && matrix.arch != '-i386' }}
+> +        with:
+> +          name: multipath-${{ matrix.os }}-${{ matrix.arch }}
+> +          path: binaries.tar
+> +
+> +  test:
+> +    runs-on: ubuntu-20.04
+> +    needs: build
+> +    strategy:
+> +      matrix:
+> +        os: [buster]
+> +        arch: ['ppc64le', 'aarch64', 's390x']
+> +    steps:
+> +      - name: get binaries
+> +        uses: actions/download-artifact@v1
+> +        with:
+> +          name: multipath-${{ matrix.os }}-${{ matrix.arch }}
+> +      - name: unpack
+> +        run: tar xfv multipath-${{ matrix.os }}-${{ matrix.arch }}/binaries.tar
+> +      - name: enable foreign arch
+> +        run: sudo docker run --rm --privileged multiarch/qemu-user-static:register --reset
+> +      - name: run tests
+> +        # Github actions doesn't support referencing docker images with
+> +        # context variables. Workaround: use mosteo-actions/docker-run action
+> +        # See https://github.community/t/expressions-in-docker-uri/16271
+> +        uses: mosteo-actions/docker-run@v1
+> +        with:
+> +          image: mwilck/multipath-run-${{ matrix.os }}-${{ matrix.arch }}
+> +          # The runner is an image that has "make" as entrypoint
+> +          # So run "make -C tests" here
+> +          command: -C tests
+
+
+- name: Haskell Linter
+  # You may pin to the exact commit or the version.
+  # uses: domdere/haskell-lint-action@f865aa0bfb6db9632e0f905dee4b0716a76a5494
+  uses: domdere/haskell-lint-action@v1.0.2
+  
+  - name: Dockerfile Validator
+  # You may pin to the exact commit or the version.
+  # uses: ghe-actions/dockerfile-validator@63f192f0ce38da67f79dd1c6a8fb2644605473e5
+  uses: ghe-actions/dockerfile-validator@v1
+  with:
+    # 
+    dockerfile: # default is Dockerfile
+    # 
+    lint: # optional, default is dockerlint
+    # 
+    dockerlabelvalidate: # optional, default is yes

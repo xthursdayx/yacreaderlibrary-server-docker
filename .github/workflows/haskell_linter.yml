@@ -1,0 +1,36 @@
+name: Haskell Linter
+
+on:
+  workflow_dispatch:
+  push:
+    branches: '**'
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    branches: '**'
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  lint:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-haskell@v1
+      with:
+        ghc-version: '8.8.2'
+        cabal-version: '3.0'
+    - name: Install dependencies
+      run: |
+        cabal update
+    - name: Build
+      run: |
+        cabal configure
+        cabal build
+    - name: Haskell Linter
+      uses: domdere/haskell-lint-action@v1.0.2
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HLINT_ACTION_LOG_LEVEL: info

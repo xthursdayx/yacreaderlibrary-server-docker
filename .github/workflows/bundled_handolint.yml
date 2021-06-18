@@ -1,0 +1,11 @@
+name: Bundeled linter
+ on:
+   workflow_dispatch:
+     jobs:
+        lint_dockerfiles:
+           runs-on: ubuntu-latest
+           steps:
+           - uses: actions/checkout@v2
+           - name: Lint Dockerfiles
+           run: docker run --rm -v $(pwd):/repo -i hadolint/hadolint sh -c "cd /repo && hadolint ./Dockerfile*"
+          
