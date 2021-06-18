@@ -20,20 +20,20 @@ YACReaderLibraryServer makes it easy to run a home comics server to serve your c
 
 ## Supported Architectures
 
-The `unarr` branch of this image supports multiple architectures including `x86-64`, `arm64` and `armhf`. If you plan to use the `unarr` branch. you should be able to just pull `xthursdayx/yacreaderlibrary-server-docker`  to retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+The `unarr` branch of this image supports multiple architectures including `x86-64`, `arm64` and `armhf`. If you plan to use the `unarr` branch. you should be able to just pull `xthursdayx/yacreaderlibrary-server-docker`  to retrieve the correct image for your arch, but you can also pull specific arch images via tags. IN the future I will be adding muttie arch versions of the opzip branch as well.
 
 The architectures currently supported by this image are:
 
-| Architecture | Tag |  Tag |
-| :----: | ---: | --- |
-| x86-64 | amd64-latest |
-| arm64 | arm64v8-latest |
-| armhf | arm32v7-latest |
-| x86-64 | amd64-p7zip  |
+| Architecture | Tag |  Tag | Branch |
+| :----: | ---: | --- -----: -------
+| x86-64 | amd64-latest  | unrarr |
+| arm64 | arm64v8-latest | unarr |
+| armhf | arm32v7-latest | unarr | 
+| x86-64 | amd64-p7zip   |  p7zip |
 
 ## Setup Instructions:
 
-You can choose to install one of two versions of the YACReaderLibraryServer docker image, which use two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:pzip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`.
+You can choose to install one of two major versions of the YACReaderLibraryServer docker image, outside of that works your your computer's architecture. These braches use two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These are are handled via the Docker repository tags: `xthursdayx/yacreaderlibrary-server-docker:pzip` and `xthursdayx/yacreaderlibrary-server-docker:unarr`.
 
 For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, which is the default installation. It should be noted, however, that as of [version 1.0.1](https://github.com/selmf/unarr/releases/tag/v1.0.1), `unarr` supports fewer formats than `p7zip`, notably RAR5. There is also some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and create your comics library(s) faster than the version complied with `unarr`, so the choice is yours. In practice, any shortcomings `unarr` has are rarely an issue, since the vast majority of comic books use either zip or RAR4 compression, which is handled nicely by this backend, and after the initial library creation, library updates proceed smoothly with either decompression backend.
 
