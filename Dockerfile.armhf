@@ -81,7 +81,3 @@ COPY root/ /
 # ports and volumes
 EXPOSE 8080
 VOLUME /config /comics
-
-#HEALTHCHECK --interval=30s --timeout=20s --start-period=20s \
- # CMD wget --no-verbose --tries=1 --spider http://localhost:8080 || exit 1
- 
