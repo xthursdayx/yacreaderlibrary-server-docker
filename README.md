@@ -17,6 +17,20 @@ Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/ya
 
 YACReaderLibraryServer makes it easy to run a home comics server to serve your comics to any device running a YACReader client (including [Windows, MacOS, and Linux](https://www.yacreader.com/downloads) as well [the YACReader iOS app](https://ios.yacreader.com/).
 
+
+## Supported Architectures
+
+The `unarr` branch of this image supports multiple architectures including `x86-64`, `arm64` and `armhf`. If you plan to use the `unarr` branch. you should be able to just pull `xthursdayx/yacreaderlibrary-server-docker`  to retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+
+The architectures currently supported by this image are:
+
+| Architecture | Tag |  Tag |
+| :----: | ---: | --- |
+| x86-64 | amd64-latest |
+| arm64 | arm64v8-latest |
+| armhf | arm32v7-latest |
+| x86-64 | amd64-p7zip  |
+
 ## Setup Instructions:
 
 You can choose to install one of two versions of the YACReaderLibraryServer docker image, which use two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:pzip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`.
@@ -149,6 +163,8 @@ Here are the instructions for updating containers:
 * You can use [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended.
 
 ## Versions
+
+* **18.06.21:** - Created multi-arch images for the unarr  branch (amd64, arm32v7, arm64v8)
 
 * **14.06.21:** - Switched to monorepo with unarr and p7zip versions.
 
