@@ -8,26 +8,33 @@ ENV APPNAME="YACReaderLibraryServer"
 ENV HOME="/config"
 LABEL maintainer="xthursdayx"
 
-# install Qt5 and dependencies
+#3 install Qt5 and dependencies ##
 RUN \
     apt-get update && \
-    apt-get install -yq \
+    apt-get install -y  --no-install-recommends \
        build-essential \
        cmake \
        desktop-files-utils \
        g++ \
        git \
+       qt5-default \
        libbz2-dev \
+       libglu1-mesa-dev \
        libglu1-mesa-dev \
        liblzma-dev \
        libpoppler-qt5-dev \
        libpoppler-qt5-1 \
        libqt5core5a \
        libqt5gui5 \
+       libqt5multimedia5 
        libqt5network5 \
        libqt5opengl5 \
+       libqt5qml5 \
+       libqt5quickcontrols2-5 \
+       libqt5script5 \
        libqt5sql5-sqlite \
        libqt5sql5 \
+       libqt5svg5 \
        libsqlite3-dev \
        libwebp6 \
        make \
