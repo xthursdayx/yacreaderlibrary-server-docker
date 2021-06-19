@@ -1,5 +1,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 
+LABEL maintainer="xthursdayx"
+
 # package versions
 ARG YACR_VERSION="9.8.1"
 
@@ -7,13 +9,11 @@ ARG YACR_VERSION="9.8.1"
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV APPNAME="YACReaderLibraryServer"
 ENV HOME="/config"
-LABEL maintainer="xthursdayx"
 
-## install Qt5 and dependencies ##
+# install build & runtime packages
 RUN \
     apt-get update && \
-    apt-get install -y --no-install-recommends \
-       build-essential \
+    apt-get install -y \
        cmake \
        git \
        qt5-default \
@@ -40,8 +40,10 @@ RUN \
        sqlite3 \
        unzip \
        wget \
-       zlib1g-dev && \
-    ## install unarr libraries ##
+       zlib1g-dev \
+       build-essential \
+       binutils && \
+# install unarr libraries
     git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
     cd /tmp/unarr && \
     mkdir -p build && \
@@ -49,7 +51,7 @@ RUN \
     cmake -DENABLE_7Z=ON .. && \
     make && \
     make install && \
-    ## build yacreaderlibraryserver ##
+# build yacreaderlibraryserver
     git clone -b master --single-branch https://github.com/YACReader/yacreader.git /src/git && \
     cd /src/git/ && \
     git checkout $YACR_VERSION && \
@@ -57,11 +59,12 @@ RUN \
     qmake PREFIX=/app "CONFIG+=unarr server_standalone" YACReaderLibraryServer.pro && \
     make  && \
     make install && \
-    ## clean up ##
     cd / && \
-    apt-get purge -y cmake git wget build-essential && \
-    apt-get -y autoremove && \
+# clean up
     apt-get clean && \
+    apt-get autoremove && \
+    apt-get purge -y cmake git wget build-essential binutils && \
+    apt-get -y autoremove && \
     rm -rf \
        /src \
        /tmp/* \
@@ -76,5 +79,4 @@ COPY root/ /
 
 # ports and volumes
 EXPOSE 8080
-
 VOLUME /config /comics
