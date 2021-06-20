@@ -73,7 +73,7 @@ RUN \
 
 # set ENV
 ENV LC_ALL="en_US.UTF-8" \
-    PATH="/app/bin/:${PATH}"
+    PATH="/app/bin:${PATH}"
 
 COPY root/ /
 
