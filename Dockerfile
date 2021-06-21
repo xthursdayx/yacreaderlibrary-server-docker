@@ -3,7 +3,7 @@ FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 LABEL maintainer="xthursdayx"
 
 # package versions
-ARG YACR_VERSION="9.8.1"
+ARG YACR_VERSION="9.8.2.2106204"
 
 # env variables
 ARG DEBIAN_FRONTEND="noninteractive"
