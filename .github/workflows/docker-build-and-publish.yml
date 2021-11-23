@@ -2,9 +2,9 @@
 # Builds our multi-arch Docker images for p7zip and unarr versions of YACReaderLibraryServer
 name: Build and push images
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+#  push:
+#    tags:
+#      - 'v*.*.*'
   release:
     types: [published]  
   workflow_dispatch:
