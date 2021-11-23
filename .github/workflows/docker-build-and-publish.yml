@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKERHUB_SLUG: xthursdayx/yacreader-library-server-dev
-  GHCR_SLUG: ghcr.io/xthursdayx/yacreader-library-server-dev
+  DOCKERHUB_SLUG: xthursdayx/yacreaderlibrary-server-docker
+  GHCR_SLUG: ghcr.io/xthursdayx/yacreaderlibrary-server-docker
 
 jobs:
   build-unarr-amd64:
