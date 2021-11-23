@@ -4,7 +4,7 @@
 
 # YACReaderLibraryServer Docker
 
-[![Docker Builds](https://img.shields.io/github/workflow/status/xthursdayx/yacreaderlibrary-server-docker/Docker%20Build%20and%20Publish?logo=githubactions&label=Image%20Builds&style=for-the-badge)](https://raw.githubusercontent.com/xthursdayx/yacreaderlibrary-server-docker/unarr/.github/workflows/docker-build-and-publish.yml)
+[![Docker Builds](https://img.shields.io/github/workflow/status/xthursdayx/yacreaderlibrary-server-docker/Docker%20Build%20and%20Publish?logo=githubactions&label=Image%20Builds&style=for-the-badge)](https://raw.githubusercontent.com/xthursdayx/yacreaderlibrary-server-docker/.github/workflows/docker-build-and-publish.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/xthursdayx/yacreaderlibrary-server-docker?label=pulls&logo=docker&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker)
 [![Docker Pulls](https://img.shields.io/badge/Docker%20Architectures-amd64%20%7C%20arm32v7%20%7C%20arm64v8-informational?style=for-the-badge&logo=appveyor)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr-amd64?label=unarr%20image&logo=ubuntu&size&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker:unarr-amd64)
