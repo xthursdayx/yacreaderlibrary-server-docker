@@ -6,40 +6,46 @@
 
 [![Docker Builds](https://img.shields.io/github/workflow/status/xthursdayx/yacreaderlibrary-server-docker/Docker%20Build%20and%20Publish?logo=githubactions&label=Image%20Builds&style=for-the-badge)](https://raw.githubusercontent.com/xthursdayx/yacreaderlibrary-server-docker/unarr/.github/workflows/docker-build-and-publish.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/xthursdayx/yacreaderlibrary-server-docker?label=pulls&logo=docker&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker)
+[![Docker Pulls](https://img.shields.io/badge/Docker%20Architectures-amd64%20%7C%20arm32v7%20%7C%20arm64v8-informational?style=for-the-badge&logo=appveyor)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr?label=unarr%20image&logo=ubuntu&size&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker:unarr)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/p7zip?label=p7zip%20image%20size&logo=ubuntu&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker:p7zip)
 [![GitHub Release](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?style=for-the-badge&logo=github)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/releases)
 [![GitHub](https://img.shields.io/static/v1.svg?style=for-the-badge&label=xthursdayx&message=GitHub&logo=github)](https://github.com/xthursdayx "view the source for all of my repositories.")
 
-Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 18.04 LTS cloud image](https://cloud-images.ubuntu.com/) and [S6 overlay](https://github.com/just-containers/s6-overlay). 
+Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 20.04 LTS cloud image](https://cloud-images.ubuntu.com/) and [S6 overlay](https://github.com/just-containers/s6-overlay). 
 
 [YACReader](https://www.yacreader.com/) is the best comic reader and comic manager available, with support for cbr, cbz, zip, and rar comic files. 
 
 YACReaderLibraryServer makes it easy to run a home comics server to serve your comics to any device running a YACReader client (including [Windows, MacOS, and Linux](https://www.yacreader.com/downloads) as well [the YACReader iOS app](https://ios.yacreader.com/).
 
-
-## Supported Architectures
-
-The `unarr` branch of this image supports multiple architectures including `x86-64`, `arm64` and `armhf`. If you plan to use the `unarr` branch. you should be able to just pull `xthursdayx/yacreaderlibrary-server-docker`  to retrieve the correct image for your arch, but you can also pull specific arch images via tags. IN the future I will be adding muttie arch versions of the opzip branch as well.
-
-The architectures currently supported by this image are:
-
-| Architecture | Tag |  Tag | Branch |
-| :----: | ---: | --- -----: -------
-| x86-64 | amd64-latest  | unrarr |
-| arm64 | arm64v8-latest | unarr |
-| armhf | arm32v7-latest | unarr | 
-| x86-64 | amd64-p7zip   |  p7zip |
-
 ## Setup Instructions:
 
-You can choose to install one of two major versions of the YACReaderLibraryServer docker image, outside of that works your your computer's architecture. These braches use two different compression backends - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These are are handled via the Docker repository tags: `xthursdayx/yacreaderlibrary-server-docker:pzip` and `xthursdayx/yacreaderlibrary-server-docker:unarr`.
+You can choose to install one of two versions of the YACReaderLibraryServer docker image, each compiled with a different compression backend - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:pzip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`.
 
-For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, which is the default installation. It should be noted, however, that as of [version 1.0.1](https://github.com/selmf/unarr/releases/tag/v1.0.1), `unarr` supports fewer formats than `p7zip`, notably RAR5. There is also some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and create your comics library(s) faster than the version complied with `unarr`, so the choice is yours. In practice, any shortcomings `unarr` has are rarely an issue, since the vast majority of comic books use either zip or RAR4 compression, which is handled nicely by this backend, and after the initial library creation, library updates proceed smoothly with either decompression backend.
+For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, so this version is the default installation. It should be noted, however, that as of [version 1.0.1](https://github.com/selmf/unarr/releases/tag/v1.0.1), `unarr` supports fewer formats than `p7zip`, notably RAR5. There is also some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and create your comics library(s) faster than the version complied with `unarr`, so the choice is yours. In practice, the `unarr` rarely causes issues as the vast majority of comic books use either zip or RAR4 compression, which is handled nicely by this backend, and after the initial library creation, library updates proceed smoothly with either decompression backend.
 
-If you would like to use the default `unarr` backend, then you do not need to add any tag to `xthursdayx/yacreaderlibrary-server-docker` since it will default to the `latest`/`unarr` tag.
+If you would like to use the default `unarr` backend, then you do not need to add a tag to `xthursdayx/yacreaderlibrary-server-docker` since it will default to the `latest`/`unarr` tag.
 
-The docker images are also available from the GitHub container registry: `ghcr.io/xthursdayx/yacreaderlibrary-server-docker`
+This docker image is also available from the GitHub container registry: `ghcr.io/xthursdayx/yacreaderlibrary-server-docker`
+
+### Supported Architectures
+
+This image supports multiple architectures, specifically `x86-64`, `arm64` and `armhf`, through the use of a docker manifest for multi-platform awareness. You can read more about docker manifests [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list).
+
+There is a tagged `unarr` and `p7zip` version of the image for each supported architecture. Simply pulling `xthursdayx/yacreaderlibrary-server-docker:<tag>` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+
+The architectures supported by this image, and the associated tags are:
+
+| Architecture | Tag |
+| :----: | --- |
+| x86-64 | latest/unarr |
+| x86-64 | p7zip |
+| x86-64 | unarr-amd64 |
+| x86-64 | p7zip-amd64 |
+| arm64 | unarr-arm64v8 |
+| arm64 | p7zip-arm64v8 |
+| armhf | unarr-arm32v7 |
+| armhf | p7zip-arm32v7 |
 
 Here are some examples to help you get started creating a container from this image. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/xthursdayx/yacserver.xml) in Community Apps.
 
@@ -62,7 +68,7 @@ docker run -d \
 
 ```yaml
 ---
-version: "2.1"
+version: "3"
 services:
   yacreaderlibrary-server-docker:
     container_name: YACReaderLibraryServer
@@ -91,7 +97,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e TZ=America/New_York` | Specify a timezone to use, e.g. America/New_York. |
 | `-v /config` | Directory where YACReaderLibraryServer's configuration and log files will be stored. |
 | `-v /comics` | The directory where YACReaderLibraryServer will look for your comics. |
-|  `tag` | (Optional) The docker tag will pull your chosen version YACReaderLibraryServer, the options are `pzip` or `unarr`/`latest` (default). |
+|  `tag` | (Optional) The docker tag will pull your chosen version YACReaderLibraryServer, the primary options are `pzip` or `unarr`/`latest` (default), though arch and release specific tags are also available. |
 
 ### User / Group Identifiers
 
@@ -164,13 +170,15 @@ Here are the instructions for updating containers:
 
 ## Versions
 
-* **18.06.21:** - Created multi-arch images for the unarr  branch (amd64, arm32v7, arm64v8)
+* **16.11.21:** - Streamlined multi-arch support and docker image push workflow.
+
+* **20.06.21:** - Added multi-arch support.
 
 * **14.06.21:** - Switched to monorepo with unarr and p7zip versions.
 
 * **11.06.21:** - Bug fix and patch on main p7zip branch.
 
-* **10.06.21:** - Complete rebuild and inital version.
+* **10.06.21:** - Complete rebuild and initial version.
 
 
 ## Donations
