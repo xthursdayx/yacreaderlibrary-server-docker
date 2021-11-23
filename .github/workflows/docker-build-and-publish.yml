@@ -3,14 +3,10 @@
 name: Build and push images
 on:
   push:
-    branches: 
-      - 'main'
-    paths:
-      - 'unarr/**'
-      - 'p7zip/**'
-      - '.github/workflows/docker_image_build.yaml'
+    tags:
+      - 'v*.*.*'
   release:
-    types: [created]
+    types: [published]  
   workflow_dispatch:
 
 env:
