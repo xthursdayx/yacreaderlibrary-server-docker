@@ -1,0 +1,48 @@
+---
+name: 'Readability Check'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  spellcheck:
+    name: Spellcheck
+    runs-on: ubuntu-latest
+    steps:
+    # The checkout step
+    - uses: actions/checkout@master
+    - uses: rojopolis/spellcheck-github-actions@0.16.0
+      name: Spellcheck
+      with:
+        source_files: README.md CHANGELOG.md notes/Notes.md
+        task_name: Markdown  
+
+  readable:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v1
+     - name: Readable Readme
+       uses: tianhaoz95/readable-readme@v1.0.4-beta
+       with:
+          token: ${{ secrets.GITHUB_TOKEN }}      
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: write-good action step
+      id: write-good
+      uses: tomwhross/write-good-action@v1.4
+    # Use the output from the `write-good` step
+    - name: Get the write-good output
+      run: echo "${{ steps.write-good.outputs.result }}"
+    - name: Post comment
+      uses: mshick/add-pr-comment@v1
+      if: ${{ steps.write-good.outputs.result }}
+      with:
+        message: |
+          ${{ steps.write-good.outputs.result }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+        allow-repeats: false # This is the default

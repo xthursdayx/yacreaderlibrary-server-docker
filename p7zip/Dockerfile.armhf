@@ -1,0 +1,81 @@
+FROM ghcr.io/linuxserver/baseimage-ubuntu:arm32v7-focal
+
+# package versions
+ARG YACR_VERSION="9.8.2"
+
+# env variables
+ARG DEBIAN_FRONTEND="noninteractive"
+ENV APPNAME="YACReaderLibraryServer"
+ENV HOME="/config"
+LABEL maintainer="xthursdayx"
+
+# install build & runtime packages
+RUN \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+       build-essential \
+       desktop-file-utils \
+       g++ \
+       git \
+       qt5-default \
+       libglu1-mesa-dev \
+       libpoppler-qt5-dev \
+       libpoppler-qt5-1 \
+       libqt5core5a \
+       libqt5gui5 \
+       libqt5multimedia5 \
+       libqt5network5 \
+       libqt5opengl5-dev \
+       libqt5qml5 \
+       libqt5quickcontrols2-5 \
+       libqt5script5 \
+       libqt5sql5-sqlite \
+       libqt5sql5 \
+       libqt5svg5 \
+       libsqlite3-dev \
+       libwebp6 \
+       make \
+       qtbase5-dev \
+       qt5-image-formats-plugins \
+       qt5-qmake \
+       qtdeclarative5-dev \
+       qtmultimedia5-dev \
+       qtscript5-dev \
+       sqlite3 \
+       unzip \
+       wget && \
+# clone yacreaderlibraryserver
+    git clone -b master --single-branch https://github.com/YACReader/yacreader.git /src/git && \
+    cd /src/git && \
+    git checkout $YACR_VERSION && \
+# install p7zip libraries
+    cd /src/git/compressed_archive && \
+    wget "https://sourceforge.net/projects/p7zip/files/p7zip/16.02/p7zip_16.02_src_all.tar.bz2" && \
+    tar xjf /src/git/compressed_archive/p7zip_16.02_src_all.tar.bz2 -C /src/git/compressed_archive && \
+    mv /src/git/compressed_archive/p7zip_16.02 /src/git/compressed_archive/libp7zip && \
+# build yacreaderlibraryserver
+    cd /src/git/YACReaderLibraryServer && \
+    qmake PREFIX=/app "CONFIG+=7zip server_standalone" YACReaderLibraryServer.pro && \
+    make  && \
+    make install && \
+# clean up
+    cd / && \
+    apt-get clean && \
+    apt-get purge -y build-essential g++ git make qt5-qmake unzip wget && \
+    apt-get -y autoremove && \
+    rm -rf \
+       /src \
+       /tmp/* \
+       /var/cache/apt \
+       /var/lib/apt/lists/*
+
+# set ENV
+ENV LC_ALL="en_US.UTF-8" \
+    PATH="/app/bin:${PATH}"
+
+# copy files
+COPY root/ /
+
+# ports and volumes
+EXPOSE 8080
+VOLUME [ "/config" "/comics" ]
