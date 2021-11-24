@@ -310,6 +310,27 @@ jobs:
     needs: [build-unarr-amd64, build-unarr-arm64v8, build-unarr-arm32v7, build-p7zip-amd64, build-p7zip-arm64v8, build-p7zip-arm32v7]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ${{ env.DOCKERHUB_SLUG }}
+            ${{ env.GHCR_SLUG }}
+          flavor: latest=false
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+    
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
