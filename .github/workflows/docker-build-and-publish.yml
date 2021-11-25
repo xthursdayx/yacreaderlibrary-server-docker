@@ -29,11 +29,10 @@ jobs:
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
-#           ${{ env.GHCR_SLUG }}
+            ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
+            type=ref,event=tag
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
@@ -85,11 +84,10 @@ jobs:
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
- #           ${{ env.GHCR_SLUG }}
+            ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
+            type=ref,event=tag
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
@@ -144,11 +142,10 @@ jobs:
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
-#            ${{ env.GHCR_SLUG }}
+            ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
+            type=ref,event=tag
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
@@ -321,8 +318,7 @@ jobs:
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
+            type=ref,event=tag
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
@@ -380,8 +376,7 @@ jobs:
           docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-amd64 --arch amd64
           docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-arm64v8 --arch arm64
           docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-arm32v7 --arch arm
-          docker manifest push ${{ steps.meta.outputs.tags }}
-          
+          docker manifest push ${{ steps.meta.outputs.tags }}  
 
       - name: Create manifest for multi-arch images @ GHCR
         run: |
