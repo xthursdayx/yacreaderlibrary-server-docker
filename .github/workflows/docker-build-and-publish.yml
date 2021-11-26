@@ -32,8 +32,8 @@ jobs:
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
-#            type=ref,event=tag
-            type=semver,pattern={{version}}
+            type=ref,event=tag
+#            type=semver,pattern={{version}}
 #            type=semver,pattern={{major}}.{{minor}}
 #            type=semver,pattern={{major}}
 
@@ -88,8 +88,8 @@ jobs:
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
-#            type=ref,event=tag
-            type=semver,pattern={{version}}
+            type=ref,event=tag
+#            type=semver,pattern={{version}}
 #            type=semver,pattern={{major}}.{{minor}}
 #            type=semver,pattern={{major}}
 
@@ -353,9 +353,6 @@ jobs:
           docker pull ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64
           docker pull ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
           docker pull ${{ env.DOCKERHUB_SLUG }}:p7zip-arm32v7
-#          docker pull ${{ steps.meta.outputs.tags }}-amd64
-#          docker pull ${{ steps.meta.outputs.tags }}-arm64v8
-#          docker pull ${{ steps.meta.outputs.tags }}-arm32v7
           docker manifest create ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-amd64 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8 ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-amd64 --arch amd64
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8 --arch arm64
@@ -371,6 +368,9 @@ jobs:
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8 --arch arm64
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7 --arch arm
           docker manifest push ${{ env.DOCKERHUB_SLUG }}:latest
+#          docker pull ${{ steps.meta.outputs.tags }}-amd64
+#          docker pull ${{ steps.meta.outputs.tags }}-arm64v8
+#          docker pull ${{ steps.meta.outputs.tags }}-arm32v7
 #          docker manifest create ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-amd64 ${{ steps.meta.outputs.tags }}-arm64v8 ${{ steps.meta.outputs.tags }}-arm32v7
 #          docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-amd64 --arch amd64
 #          docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-arm64v8 --arch arm64
