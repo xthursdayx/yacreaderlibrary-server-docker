@@ -2,9 +2,6 @@
 # Builds our multi-arch Docker images for p7zip and unarr versions of YACReaderLibraryServer
 name: Build and push images
 on:
-  push:
-    tags:
-      - 'v*.*.*-**'
   release:
     types: [published]  
   workflow_dispatch:
@@ -310,9 +307,6 @@ jobs:
           flavor: latest=false
           tags: |
             type=ref,event=tag
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
