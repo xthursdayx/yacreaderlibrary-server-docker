@@ -21,11 +21,20 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Docker meta
-        id: meta
+        id: dh-meta
         uses: docker/metadata-action@v3
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
+          flavor: latest=false
+          tags: |
+            type=ref,event=tag
+
+      - name: Docker meta
+        id: gh-meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
@@ -60,8 +69,9 @@ jobs:
             ${{ env.DOCKERHUB_SLUG }}:latest-amd64
             ${{ env.GHCR_SLUG }}:unarr-amd64
             ${{ env.GHCR_SLUG }}:latest-amd64
-            ${{ steps.meta.outputs.tags }}-amd64
-          labels: ${{ steps.meta.outputs.labels }}
+            ${{ steps.dh-meta.outputs.tags }}-amd64
+            ${{ steps.gh-meta.outputs.tags }}-amd64
+          labels: ${{ steps.dh-meta.outputs.labels }}
 
   build-unarr-arm64v8:
     runs-on: ubuntu-latest
@@ -73,11 +83,20 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Docker meta
-        id: meta
+        id: dh-meta
         uses: docker/metadata-action@v3
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
+          flavor: latest=false
+          tags: |
+            type=ref,event=tag
+
+      - name: Docker meta
+        id: gh-meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
@@ -115,8 +134,9 @@ jobs:
             ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
             ${{ env.GHCR_SLUG }}:unarr-arm64v8
             ${{ env.GHCR_SLUG }}:latest-arm64v8
-            ${{ steps.meta.outputs.tags }}-arm64v8
-          labels: ${{ steps.meta.outputs.labels }}
+            ${{ steps.dh-meta.outputs.tags }}-arm64v8
+            ${{ steps.gh-meta.outputs.tags }}-arm64v8
+          labels: ${{ steps.dh-meta.outputs.labels }}
 
   build-unarr-arm32v7:
     runs-on: ubuntu-latest
@@ -128,11 +148,20 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Docker meta
-        id: meta
+        id: dh-meta
         uses: docker/metadata-action@v3
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
+          flavor: latest=false
+          tags: |
+            type=ref,event=tag
+
+      - name: Docker meta
+        id: gh-meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
@@ -170,8 +199,9 @@ jobs:
             ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7
             ${{ env.GHCR_SLUG }}:unarr-arm32v7
             ${{ env.GHCR_SLUG }}:latest-arm32v7
-            ${{ steps.meta.outputs.tags }}-arm32v7
-          labels: ${{ steps.meta.outputs.labels }}
+            ${{ steps.dh-meta.outputs.tags }}-arm32v7
+            ${{ steps.gh-meta.outputs.tags }}-arm32v7
+          labels: ${{ steps.dh-meta.outputs.labels }}
 
   build-p7zip-amd64:
     runs-on: ubuntu-latest
@@ -298,11 +328,20 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Docker meta
-        id: meta
+        id: dh-meta
         uses: docker/metadata-action@v3
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
+          flavor: latest=false
+          tags: |
+            type=ref,event=tag
+
+      - name: Docker meta
+        id: gh-meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
@@ -355,14 +394,22 @@ jobs:
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7 --arch arm
           docker manifest push ${{ env.DOCKERHUB_SLUG }}:latest
 
-          docker pull ${{ steps.meta.outputs.tags }}-amd64
-          docker pull ${{ steps.meta.outputs.tags }}-arm64v8
-          docker pull ${{ steps.meta.outputs.tags }}-arm32v7
-          docker manifest create ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-amd64 ${{ steps.meta.outputs.tags }}-arm64v8 ${{ steps.meta.outputs.tags }}-arm32v7
-          docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-amd64 --arch amd64
-          docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-arm64v8 --arch arm64
-          docker manifest annotate ${{ steps.meta.outputs.tags }} ${{ steps.meta.outputs.tags }}-arm32v7 --arch arm
-          docker manifest push ${{ steps.meta.outputs.tags }}  
+          docker pull ${{ steps.dh-meta.outputs.tags }}-amd64
+          docker pull ${{ steps.dh-meta.outputs.tags }}-arm64v8
+          docker pull ${{ steps.dh-meta.outputs.tags }}-arm32v7
+          docker manifest create ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-amd64 ${{ steps.dh-meta.outputs.tags }}-arm64v8 ${{ steps.dh-meta.outputs.tags }}-arm32v7
+          docker manifest annotate ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-amd64 --arch amd64
+          docker manifest annotate ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-arm64v8 --arch arm64
+          docker manifest annotate ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-arm32v7 --arch arm
+          docker manifest push ${{ steps.dh-meta.outputs.tags }}
+          docker pull ${{ steps.gh-meta.outputs.tags }}-amd64
+          docker pull ${{ steps.gh-meta.outputs.tags }}-arm64v8
+          docker pull ${{ steps.gh-meta.outputs.tags }}-arm32v7
+          docker manifest create ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-amd64 ${{ steps.gh-meta.outputs.tags }}-arm64v8 ${{ steps.gh-meta.outputs.tags }}-arm32v7
+          docker manifest annotate ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-amd64 --arch amd64
+          docker manifest annotate ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-arm64v8 --arch arm64
+          docker manifest annotate ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-arm32v7 --arch arm
+          docker manifest push ${{ steps.gh-meta.outputs.tags }} 
 
       - name: Create manifest for multi-arch images @ GHCR
         run: |
