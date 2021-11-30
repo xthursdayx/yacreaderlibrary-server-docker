@@ -6,11 +6,11 @@ updates:
       interval: 'daily'
 
   - package-ecosystem: 'docker'
-    directory: '/light'
+    directory: '/unarr'
     schedule:
       interval: 'daily'
 
   - package-ecosystem: 'docker'
-    directory: '/dark'
+    directory: '/p7zip'
     schedule:
       interval: 'daily'
