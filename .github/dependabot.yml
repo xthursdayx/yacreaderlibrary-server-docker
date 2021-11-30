@@ -1,11 +1,16 @@
 version: 2
 updates:
   - package-ecosystem: 'github-actions'
-    directory: '/'
+    directory: '/.github/workflows'
     schedule:
       interval: 'daily'
 
   - package-ecosystem: 'docker'
-    directory: '/'
+    directory: '/light'
+    schedule:
+      interval: 'daily'
+
+  - package-ecosystem: 'docker'
+    directory: '/dark'
     schedule:
       interval: 'daily'
