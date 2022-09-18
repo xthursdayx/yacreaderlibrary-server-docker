@@ -1,7 +1,7 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:focal
+FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 
 # package versions
-ARG YACR_VERSION="9.8.2"
+ARG YACR_VERSION="9.9.1"
 
 # env variables
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -18,7 +18,6 @@ RUN \
        desktop-file-utils \
        g++ \
        git \
-       qt5-default \
        libbz2-dev \
        libglu1-mesa-dev \
        liblzma-dev \
@@ -36,7 +35,6 @@ RUN \
        libqt5sql5 \
        libqt5svg5 \
        libsqlite3-dev \
-       libwebp6 \
        make \
        qtbase5-dev \
        qt5-image-formats-plugins \
