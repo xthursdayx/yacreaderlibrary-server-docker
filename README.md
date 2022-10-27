@@ -170,6 +170,8 @@ Here are the instructions for updating containers:
 
 ## Versions
 
+* **27.10.22:** - Updated to YACReaderLibrary 9.2.2.
+
 * **16.11.21:** - Streamlined multi-arch support and docker image push workflow.
 
 * **20.06.21:** - Added multi-arch support.

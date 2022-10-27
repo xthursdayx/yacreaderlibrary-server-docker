@@ -1,7 +1,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:focal
 
 # package versions
-ARG YACR_VERSION="9.8.2"
+ARG YACR_VERSION="9.9.2"
 
 # env variables
 ARG DEBIAN_FRONTEND="noninteractive"
