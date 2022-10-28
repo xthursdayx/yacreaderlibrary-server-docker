@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:arm32v7-focal
+FROM ghcr.io/linuxserver/baseimage-ubuntu:arm32v7-jammy
 
 # package versions
 ARG YACR_VERSION="9.9.2"
@@ -17,7 +17,6 @@ RUN \
        desktop-file-utils \
        g++ \
        git \
-       qt5-default \
        libglu1-mesa-dev \
        libpoppler-qt5-dev \
        libpoppler-qt5-1 \
@@ -33,7 +32,6 @@ RUN \
        libqt5sql5 \
        libqt5svg5 \
        libsqlite3-dev \
-       libwebp6 \
        make \
        qtbase5-dev \
        qt5-image-formats-plugins \
