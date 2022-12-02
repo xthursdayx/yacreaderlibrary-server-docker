@@ -1,7 +1,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 
 # package versions
-ARG YACR_VERSION="9.9.2"
+ARG YACR_VERSION="9.10.0"
 
 # env variables
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -30,15 +30,19 @@ RUN \
        libqt5script5 \
        libqt5sql5-sqlite \
        libqt5sql5 \
-       libqt5svg5 \
+       libqt5svg5-dev \
        libsqlite3-dev \
        make \
-       qtbase5-dev \
-       qt5-image-formats-plugins \
+       qtchooser \
+       qtbase5-dev-tools \
        qt5-qmake \
-       qtdeclarative5-dev \
+       qtbase5-dev \
        qtmultimedia5-dev \
+       qt5-image-formats-plugins \
+       qtdeclarative5-dev \
+       qtquickcontrols2-5-dev \
        qtscript5-dev \
+       qttools5-dev-tools \
        sqlite3 \
        unzip \
        wget && \
