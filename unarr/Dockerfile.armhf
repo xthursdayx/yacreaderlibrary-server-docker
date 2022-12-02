@@ -52,10 +52,17 @@ RUN \
     cd /src/git && \
     git checkout $YACR_VERSION && \
 # install unarr libraries
-    cd /src/git/compressed_archive/unarr && \
-    git clone https://github.com/selmf/unarr.git unarr-master && \
-    cd unarr-master/lzmasdk && \
-    ln -s 7zTypes.h Types.h && \
+#    cd /src/git/compressed_archive/unarr && \
+#    git clone https://github.com/selmf/unarr.git unarr-master && \
+#    cd unarr-master/lzmasdk && \
+#    ln -s 7zTypes.h Types.h && \
+    git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
+    cd /tmp/unarr && \
+    mkdir -p build && \
+    cd build && \
+    cmake -DENABLE_7Z=ON .. && \
+    make && \
+    make install && \
 # build yacreaderlibraryserver
     cd /src/git/YACReaderLibraryServer && \
     qmake PREFIX=/app "CONFIG+=unarr server_standalone" YACReaderLibraryServer.pro && \
