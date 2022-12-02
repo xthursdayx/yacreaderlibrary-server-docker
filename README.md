@@ -170,7 +170,9 @@ Here are the instructions for updating containers:
 
 ## Versions
 
-* **27.10.22:** - Updated to YACReaderLibrary 9.2.2.
+* **02.12.22:** - Update YACReader to 9.10.0 and upgrade to s6v3.
+
+* **27.10.22:** - Updated to YACReaderLibrary 9.9.2 and rebase to Jammy.
 
 * **16.11.21:** - Streamlined multi-arch support and docker image push workflow.
 
