@@ -1,0 +1,13 @@
+#!/bin/execlineb -P
+
+# Redirect stderr to stdout.
+fdmove -c 2 1
+
+# Notify service manager when yacreaderlibraryserver is up
+s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z localhost 8080"
+
+# Drop privileges and set env
+with-contenv s6-setuidgid abc
+
+# Start YACReaderLibraryServer
+YACReaderLibraryServer start
