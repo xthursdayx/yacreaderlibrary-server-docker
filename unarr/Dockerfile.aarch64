@@ -1,7 +1,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:arm64v8-jammy
 
 # package versions
-ARG YACR_VERSION="9.10.0"
+ARG YACR_VERSION="9.11.0"
 
 # env variables
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -83,4 +83,4 @@ COPY root/ /
 
 # ports and volumes
 EXPOSE 8080
-VOLUME [ "/config" "/comics" ]
+VOLUME ["/config", "/comics"]
