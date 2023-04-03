@@ -393,9 +393,9 @@ jobs:
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8 --arch arm64
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7 --arch arm
           docker manifest push ${{ env.DOCKERHUB_SLUG }}:latest
-          docker pull --platform=linux/amd64 ${{ steps.dh-meta.outputs.tags }}-amd64
-          docker pull --platform=linux/arm64 ${{ steps.dh-meta.outputs.tags }}-arm64v8
-          docker pull --platform=linux/arm/v7 ${{ steps.dh-meta.outputs.tags }}-arm32v7
+          docker pull ${{ steps.dh-meta.outputs.tags }}-amd64
+          docker pull ${{ steps.dh-meta.outputs.tags }}-arm64v8
+          docker pull ${{ steps.dh-meta.outputs.tags }}-arm32v7
           docker manifest create ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-amd64 ${{ steps.dh-meta.outputs.tags }}-arm64v8 ${{ steps.dh-meta.outputs.tags }}-arm32v7
           docker manifest annotate ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-amd64 --arch amd64
           docker manifest annotate ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-arm64v8 --arch arm64
@@ -428,9 +428,9 @@ jobs:
           docker manifest annotate ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-arm64v8 --arch arm64
           docker manifest annotate ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-arm32v7 --arch arm
           docker manifest push ${{ env.GHCR_SLUG }}:latest
-          docker pull --platform=linux/amd64 ${{ steps.gh-meta.outputs.tags }}-amd64
-          docker pull --platform=linux/arm64 ${{ steps.gh-meta.outputs.tags }}-arm64v8
-          docker pull --platform=linux/arm/v7 ${{ steps.gh-meta.outputs.tags }}-arm32v7
+          docker pull ${{ steps.gh-meta.outputs.tags }}-amd64
+          docker pull ${{ steps.gh-meta.outputs.tags }}-arm64v8
+          docker pull ${{ steps.gh-meta.outputs.tags }}-arm32v7
           docker manifest create ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-amd64 ${{ steps.gh-meta.outputs.tags }}-arm64v8 ${{ steps.gh-meta.outputs.tags }}-arm32v7
           docker manifest annotate ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-amd64 --arch amd64
           docker manifest annotate ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-arm64v8 --arch arm64
