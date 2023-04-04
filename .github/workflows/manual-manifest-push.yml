@@ -59,7 +59,7 @@ jobs:
         run: |
           # get artifacts from previous steps and integrate into one multi-arch manifest
           docker pull --platform=linux/amd64 $DOCKERHUB_SLUG:unarr-amd64
-          docker pull --platform=linux/arm64 unarr-arm64v8
+          docker pull --platform=linux/arm64 $DOCKERHUB_SLUG:unarr-arm64v8
           docker pull --platform=linux/arm/v7 ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7
           docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:latest-amd64
           docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
