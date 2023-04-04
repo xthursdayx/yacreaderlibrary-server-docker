@@ -35,11 +35,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Pull imagees from Docker Hub
+      - name: Pull images
         run: |
           # get artifacts from previous steps and integrate into one multi-arch manifest
-          docker pull --platform=linux/amd64 $DOCKERHUB_SLUG:unarr-amd64
-          docker pull --platform=linux/arm64 $DOCKERHUB_SLUG:unarr-arm64v8
+          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:unarr-amd64
+          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
           docker pull --platform=linux/arm/v7 ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7
           docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:latest-amd64
           docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
@@ -50,25 +50,32 @@ jobs:
 
       - name: Create manifest for multi-arch images @ Docker Hub
         run: |
-          docker manifest create $DOCKERHUB_SLUG:latest \
-            ${{ env.DOCKERHUB_SLUG }}:latest-amd64 \
-            ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8 \
-            ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7
-          docker manifest annotate $DOCKERHUB_SLUG:latest --os linux --arch amd64 $DOCKERHUB_SLUG:latest-amd64
-          docker manifest annotate $DOCKERHUB_SLUG:latest --os linux --arch arm64 --variant v8 $DOCKERHUB_SLUG:latest-arm64v8
-          docker manifest annotate $DOCKERHUB_SLUG:latest --os linux --arch arm --variant v7 $DOCKERHUB_SLUG:latest-arm32v7 
-          docker manifest push $DOCKERHUB_SLUG:latest        
-
-          docker manifest create ${{ env.DOCKERHUB_SLUG }}:unarr --amend ${{ env.DOCKERHUB_SLUG }}:unarr-amd64 --amend ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8 --amend ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-amd64 --arch amd64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8 --arch arm64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7 --arch arm
+          # get artifacts from previous steps and integrate into one multi-arch manifest
+          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:unarr-amd64
+          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
+          docker pull --platform=linux/arm/v7 ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7
+          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:latest-amd64
+          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
+          docker pull --platform=linux/arm/v7 ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7
+          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64
+          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
+          docker pull --platform=linux/arm/v7 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm32v7
+          docker manifest create ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-amd64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8 ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:latest-amd64
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest --os linux --arch arm --variant v7 ${{ env.DOCKERHUB_SLUG }}:latest-arm32v7 
+          docker manifest push ${{ env.DOCKERHUB_SLUG }}:latest        
+          docker manifest create ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-amd64 --amend ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8 --amend ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:unarr-amd64
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr --os linux --arch arm --variant v7 ${{ env.DOCKERHUB_SLUG }}:unarr-arm32v7
           docker manifest push ${{ env.DOCKERHUB_SLUG }}:unarr
           docker manifest create ${{ env.DOCKERHUB_SLUG }}:p7zip ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm32v7
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64 --arch amd64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8 --arch arm64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip ${{ env.DOCKERHUB_SLUG }}:p7zip-arm32v7 --arch arm
-          docker manifest push ${{ env.DOCKERHUB_SLUG }}:p7zip    
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip --os linux --arch arm --variant v7 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm32v7
+          docker manifest push ${{ env.DOCKERHUB_SLUG }}:p7zip
+          
 
       - name: Create manifest for multi-arch images @ GHCR
         run: |
@@ -82,17 +89,17 @@ jobs:
           docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:p7zip-arm64v8
           docker pull --platform=linux/arm/v7 ${{ env.GHCR_SLUG }}:p7zip-arm32v7
           docker manifest create -a ${{ env.GHCR_SLUG }}:unarr ${{ env.GHCR_SLUG }}:unarr-amd64 ${{ env.GHCR_SLUG }}:unarr-arm64v8 ${{ env.GHCR_SLUG }}:unarr-arm32v7
-          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr ${{ env.GHCR_SLUG }}:unarr-amd64 --arch amd64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr ${{ env.GHCR_SLUG }}:unarr-arm64v8 --arch arm64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr ${{ env.GHCR_SLUG }}:unarr-arm32v7 --arch arm
+          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr --os linux --arch amd64 ${{ env.GHCR_SLUG }}:unarr-amd64
+          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:unarr-arm64v8
+          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr --os linux --arch arm --variant v7 ${{ env.GHCR_SLUG }}:unarr-arm32v7
           docker manifest push ${{ env.GHCR_SLUG }}:unarr
           docker manifest create ${{ env.GHCR_SLUG }}:p7zip ${{ env.GHCR_SLUG }}:p7zip-amd64 ${{ env.GHCR_SLUG }}:p7zip-arm64v8 ${{ env.GHCR_SLUG }}:p7zip-arm32v7
-          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip ${{ env.GHCR_SLUG }}:p7zip-amd64 --arch amd64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip ${{ env.GHCR_SLUG }}:p7zip-arm64v8 --arch arm64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip ${{ env.GHCR_SLUG }}:p7zip-arm32v7 --arch arm
+          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip --os linux --arch amd64 ${{ env.GHCR_SLUG }}:p7zip-amd64
+          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:p7zip-arm64v8
+          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip --os linux --arch arm --variant v7 ${{ env.GHCR_SLUG }}:p7zip-arm32v7
           docker manifest push ${{ env.GHCR_SLUG }}:p7zip
           docker manifest create ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-amd64 ${{ env.GHCR_SLUG }}:latest-arm64v8 ${{ env.GHCR_SLUG }}:latest-arm32v7
-          docker manifest annotate ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-amd64 --arch amd64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-arm64v8 --arch arm64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-arm32v7 --arch arm
+          docker manifest annotate ${{ env.GHCR_SLUG }}:latest --os linux --arch amd64 ${{ env.GHCR_SLUG }}:latest-amd64
+          docker manifest annotate ${{ env.GHCR_SLUG }}:latest --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:latest-arm64v8
+          docker manifest annotate ${{ env.GHCR_SLUG }}:latest --os linux --arch arm --variant v7 ${{ env.GHCR_SLUG }}:latest-arm32v7
           docker manifest push ${{ env.GHCR_SLUG }}:latest
