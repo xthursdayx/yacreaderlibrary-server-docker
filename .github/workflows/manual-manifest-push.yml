@@ -23,7 +23,7 @@ jobs:
             ${{ env.DOCKERHUB_SLUG }}
           flavor: latest=false
           tags: |
-            type=ref,event=tag
+           type=pep440,pattern={{raw}}
 
       - name: Docker meta
         id: gh-meta
