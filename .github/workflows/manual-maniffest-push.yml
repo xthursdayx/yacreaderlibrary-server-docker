@@ -1,6 +1,6 @@
 ---
-# Builds our multi-arch Docker images for p7zip and unarr versions of YACReaderLibraryServer
-name: Build and push images
+# Build a multi-arch manifest for the p7zip and unarr versions of YACReaderLibraryServer
+name: Manual Manifest Push
 on:
   workflow_dispatch:
 
