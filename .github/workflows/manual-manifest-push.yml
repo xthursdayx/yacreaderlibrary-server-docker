@@ -35,7 +35,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Create manifest for multi-arch images @ Docker Hub
+      - name: Pull imagees from Docker Hub
         run: |
           # get artifacts from previous steps and integrate into one multi-arch manifest
           docker pull --platform=linux/amd64 $DOCKERHUB_SLUG:unarr-amd64
@@ -47,7 +47,9 @@ jobs:
           docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64
           docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
           docker pull --platform=linux/arm/v7 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm32v7
-          
+
+      - name: Create manifest for multi-arch images @ Docker Hub
+        run: |
           docker manifest create $DOCKERHUB_SLUG:latest \
             ${{ env.DOCKERHUB_SLUG }}:latest-amd64 \
             ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8 \
