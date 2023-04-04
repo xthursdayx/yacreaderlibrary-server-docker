@@ -12,7 +12,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?style=for-the-badge&logo=github)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/releases)
 [![GitHub](https://img.shields.io/static/v1.svg?style=for-the-badge&label=xthursdayx&message=GitHub&logo=github)](https://github.com/xthursdayx "view the source for all of my repositories.")
 
-Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 20.04 LTS cloud image](https://cloud-images.ubuntu.com/) and [S6 overlay](https://github.com/just-containers/s6-overlay). 
+Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/yacreader/tree/develop/YACReaderLibraryServer), running on a custom base image built with [Ubuntu 22.04 LTS cloud image](https://cloud-images.ubuntu.com/) and [S6 overlay](https://github.com/just-containers/s6-overlay). 
 
 [YACReader](https://www.yacreader.com/) is the best comic reader and comic manager available, with support for cbr, cbz, zip, and rar comic files. 
 
@@ -169,6 +169,8 @@ Here are the instructions for updating containers:
 * You can use [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended.
 
 ## Versions
+
+* **04.04.23:** - Update YACReader to 9.11.0 and fix CI build process.
 
 * **02.12.22:** - Update YACReader to 9.10.0 and upgrade to s6v3.
 
