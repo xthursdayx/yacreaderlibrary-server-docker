@@ -70,6 +70,7 @@ jobs:
           docker pull --platform=linux/amd64 ${{ steps.dh-meta.outputs.tags }}-amd64
           docker pull --platform=linux/arm64 ${{ steps.dh-meta.outputs.tags }}-arm64v8
           docker pull --platform=linux/arm/v7 ${{ steps.dh-meta.outputs.tags }}-arm32v7
+          
           docker manifest create $DOCKERHUB_SLUG:latest \
             ${{ env.DOCKERHUB_SLUG }}:latest-amd64 \
             ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8 \
