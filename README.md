@@ -170,6 +170,8 @@ Here are the instructions for updating containers:
 
 ## Versions
 
+* **25.04.23:** - Update YACReader to 9.12.0.
+
 * **04.04.23:** - Update YACReader to 9.11.0 and fix CI build process.
 
 * **02.12.22:** - Update YACReader to 9.10.0 and upgrade to s6v3.
