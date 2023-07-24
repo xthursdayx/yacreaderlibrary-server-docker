@@ -12,8 +12,7 @@ if [ ! -f /config/.local/share/YACReader/YACReaderLibrary/YACReaderLibrary.ini ]
 fi
 
 # permissions
-chown -R abc:abc \
-	/config \
-	/defaults \
-	/app \
-	/comics
+find /config -not \( -user abc -and -group abc \) -exec chown abc:abc {} +
+find /defaults -not \( -user abc -and -group abc \) -exec chown abc:abc {} +
+find /app -not \( -user abc -and -group abc \) -exec chown abc:abc {} +
+find /comics -not \( -user abc -and -group abc \) -exec chown abc:abc {} +
