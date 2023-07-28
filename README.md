@@ -4,9 +4,9 @@
 
 # YACReaderLibraryServer Docker
 
-[![Docker Builds)](https://img.shields.io/github/actions/workflow/status/xthursdayx/yacreaderlibrary-server-docker/docker-build-and-publish.yml?branch=main&logo=githubactions&label=Image%20Builds&style=for-the-badge&event=push)](https://raw.githubusercontent.com/xthursdayx/yacreaderlibrary-server-docker/main/.github/workflows/docker-build-and-publish.yml)
+[![Docker Builds)](https://img.shields.io/github/actions/workflow/status/xthursdayx/yacreaderlibrary-server-docker/docker-build-and-publish.yml?branch=main&logo=githubactions&label=Image%20Builds&style=for-the-badge&event=release)](https://raw.githubusercontent.com/xthursdayx/yacreaderlibrary-server-docker/main/.github/workflows/docker-build-and-publish.yml)
 ![Docker Pulls](https://img.shields.io/docker/pulls/xthursdayx/yacreaderlibrary-server-docker?label=pulls&logo=docker&style=for-the-badge)
-![Docker Pulls](https://img.shields.io/badge/Docker%20Architectures-amd64%20%7C%20arm32v7%20%7C%20arm64v8-informational?style=for-the-badge&logo=appveyor)
+![Docker Pulls](https://img.shields.io/badge/Docker%20Architectures-amd64%20%7C%20arm64v8-informational?style=for-the-badge&logo=appveyor)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/unarr-amd64?label=unarr%20image&logo=ubuntu&size&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker:unarr-amd64)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/xthursdayx/yacreaderlibrary-server-docker/p7zip-amd64?label=p7zip%20image%20size&logo=ubuntu&style=for-the-badge)](https://hub.docker.com/r/xthursdayx/yacreaderlibrary-server-docker:p7zip-amd64)
 [![GitHub Release](https://img.shields.io/github/v/release/xthursdayx/yacreaderlibrary-server-docker?style=for-the-badge&logo=github)](https://github.com/xthursdayx/yacreaderlibrary-server-docker/releases)
@@ -16,7 +16,7 @@ Headless version of the [YACReaderLibraryServer](https://github.com/YACReader/ya
 
 [YACReader](https://www.yacreader.com/) is the best comic reader and comic manager available, with support for cbr, cbz, zip, and rar comic files. 
 
-YACReaderLibraryServer makes it easy to run a home comics server to serve your comics to any device running a YACReader client (including [Windows, MacOS, and Linux](https://www.yacreader.com/downloads) as well [the YACReader iOS app](https://ios.yacreader.com/).
+YACReaderLibraryServer makes it easy to run a home comics server to serve your comics to any device running a YACReader client (including [Windows, MacOS, and Linux](https://www.yacreader.com/downloads) as well [the YACReader iOS app](https://ios.yacreader.com/)).
 
 ## Setup Instructions:
 
