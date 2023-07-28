@@ -170,6 +170,8 @@ Here are the instructions for updating containers:
 
 ## Versions
 
+* **28.07.23:** - Update YACReader to 9.13.1 and depreciated 32-bit Arm(hf) image.
+
 * **25.04.23:** - Update YACReader to 9.12.0.
 
 * **04.04.23:** - Update YACReader to 9.11.0 and fix CI build process.
