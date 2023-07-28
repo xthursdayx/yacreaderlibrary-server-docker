@@ -30,7 +30,7 @@ This docker image is also available from the GitHub container registry: `ghcr.io
 
 ### Supported Architectures
 
-This image supports multiple architectures, specifically `x86-64`, `arm64` and `armhf`, through the use of a docker manifest for multi-platform awareness. You can read more about docker manifests [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list).
+This image supports multiple architectures, specifically `x86-64` and `arm64`, through the use of a docker manifest for multi-platform awareness. You can read more about docker manifests [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list).
 
 There is a tagged `unarr` and `p7zip` version of the image for each supported architecture. Simply pulling `xthursdayx/yacreaderlibrary-server-docker:<tag>` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
@@ -44,8 +44,6 @@ The architectures supported by this image, and the associated tags are:
 | x86-64 | p7zip-amd64 |
 | arm64 | unarr-arm64v8 |
 | arm64 | p7zip-arm64v8 |
-| armhf | unarr-arm32v7 |
-| armhf | p7zip-arm32v7 |
 
 Here are some examples to help you get started creating a container from this image. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/xthursdayx/yacserver.xml) in Community Apps.
 
