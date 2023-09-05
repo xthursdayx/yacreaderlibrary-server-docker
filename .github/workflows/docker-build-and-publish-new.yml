@@ -31,7 +31,7 @@ jobs:
             tag: amd64
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Docker meta
         id: dh-meta
@@ -132,7 +132,7 @@ jobs:
             file: unarr/Dockerfile
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Docker meta
         id: dh-meta
@@ -256,7 +256,7 @@ jobs:
       packages: write
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -294,7 +294,7 @@ jobs:
       packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -333,7 +333,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Docker meta
         id: dh-meta
