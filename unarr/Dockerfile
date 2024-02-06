@@ -76,7 +76,7 @@ RUN \
 # clean up
     cd / && \
     apt-get clean && \
-    apt-get purge -y build-essential cmake g++ git make qmake6 unzip wget && \
+    apt-get purge -y build-essential cmake g++ gcc git make qmake6 qtchooser unzip wget && \
     apt-get -y autoremove && \
     apt-get install -y --no-install-recommends \
        libqt6core5compat6-dev && \
