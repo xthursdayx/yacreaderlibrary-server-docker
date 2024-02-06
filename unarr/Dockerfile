@@ -16,37 +16,40 @@ RUN \
        build-essential \
        cmake \
        desktop-file-utils \
+       gcc \
        g++ \
        git \
+       qtchooser \
+       qt6-tools-dev \
+       qt6-base-dev-tools \
+       qmake6 \
+       qmake6-bin \
+       qt6-base-dev \
+       qt6-multimedia-dev \
+       qt6-tools-dev-tools \
+       libgl-dev \
+       qt6-l10n-tools \
+       libqt6opengl6-dev \
+       libunarr-dev \
+       qt6-declarative-dev \
+       libqt6svg6-dev \
+       libqt6core5compat6-dev \
+### added
        libbz2-dev \
        libglu1-mesa-dev \
        liblzma-dev \
-       libpoppler-qt5-dev \
-       libpoppler-qt5-1 \
-       libqt5core5a \
-       libqt5gui5 \
-       libqt5multimedia5 \
-       libqt5network5 \
-       libqt5opengl5-dev \
-       libqt5qml5 \
-       libqt5quickcontrols2-5 \
-       libqt5script5 \
-       libqt5sql5-sqlite \
-       libqt5sql5 \
-       libqt5svg5-dev \
-       libsqlite3-dev \
+       libqt6gui6 \
+       libqt6multimedia6 \
+       libqt6network6 \
+       libqt6qml6 \
+       libqt6quickcontrols2-6 \
+       qt6-image-formats-plugins \
+       libqt6sql6 \
+       libqt6sql6-sqlite \
        make \
-       qtchooser \
-       qtbase5-dev-tools \
-       qtbase5-dev \
-       qt5-image-formats-plugins \
-       qt5-qmake \
-       qtdeclarative5-dev \
-       qtmultimedia5-dev \
-       qtscript5-dev \
-       qttools5-dev-tools \
-       qtquickcontrols2-5-dev \
+       p7zip-full \
        sqlite3 \
+       libsqlite3-dev \
        unzip \
        wget \
        zlib1g-dev && \
@@ -63,14 +66,20 @@ RUN \
     cd /src/git && \
     git checkout $YACR_VERSION && \
     cd /src/git/YACReaderLibraryServer && \
-    qmake PREFIX=/app "CONFIG+=unarr server_standalone" YACReaderLibraryServer.pro && \
+    qtchooser -list-versions && \
+    qmake6 PREFIX=/app CONFIG+="unarr no_pdf server_standalone" YACReaderLibraryServer.pro && \
+    qmake6 -v && \
     make  && \
     make install && \
+# fix QT6 bug https://askubuntu.com/questions/1034313/ubuntu-18-4-libqt5core-so-5-cannot-open-shared-object-file-no-such-file-or-dir
+#    strip --remove-section=.note.ABI-tag /usr/lib/x86_64-linux-gnu/libQt6Core5Compat.so.6 && \
 # clean up
     cd / && \
     apt-get clean && \
-    apt-get purge -y build-essential cmake g++ git make qt5-qmake unzip wget && \
+    apt-get purge -y build-essential cmake g++ git make qmake6 unzip wget && \
     apt-get -y autoremove && \
+    apt-get install -y --no-install-recommends \
+       libqt6core5compat6-dev && \
     rm -rf \
        /src \
        /tmp/* \
