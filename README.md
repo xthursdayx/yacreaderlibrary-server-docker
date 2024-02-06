@@ -169,7 +169,7 @@ Here are the instructions for updating containers:
 
 ## Versions
 
-* **06.02.24:** - Update YACReader to 9.14.1.
+* **06.02.24:** - Update YACReader to 9.14.1 and update to QT6 for the `unarr` image.
 
 * **28.07.23:** - Update YACReader to 9.13.1 and depreciated 32-bit Arm(hf) image.
 
