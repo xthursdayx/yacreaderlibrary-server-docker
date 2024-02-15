@@ -35,6 +35,7 @@ RUN \
        libqt5sql5 \
        libqt5svg5 \
        libsqlite3-dev \
+       libunarr-dev \
        make \
        mercurial \
        qtbase5-dev \
@@ -48,13 +49,13 @@ RUN \
        wget \
        zlib1g-dev && \
 # install unarr libraries
-    git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
-    cd /tmp/unarr && \
-    mkdir -p build && \
-    cd build && \
-    cmake -DENABLE_7Z=ON .. && \
-    make && \
-    make install && \
+#    git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
+#    cd /tmp/unarr && \
+#    mkdir -p build && \
+#    cd build && \
+#    cmake -DENABLE_7Z=ON .. && \
+#    make && \
+#    make install && \
 # build yacreaderlibraryserver
     git clone -b master --single-branch https://github.com/YACReader/yacreader.git /src/git && \
     cd /src/git && \
