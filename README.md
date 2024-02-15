@@ -33,18 +33,18 @@ This docker image is also available from the GitHub container registry: `ghcr.io
 
 This image supports multiple architectures, specifically `x86-64` and `arm64`, through the use of a docker manifest for multi-platform awareness. You can read more about docker manifests [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list).
 
-There is a tagged `unarr` and `p7zip` version of the image for each supported architecture. Simply pulling `xthursdayx/yacreaderlibrary-server-docker:<tag>` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+There is a tagged `unarr` and `7zip` version of the image for each supported architecture. Simply pulling `xthursdayx/yacreaderlibrary-server-docker:<tag>` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
 The architectures supported by this image, and the associated tags are:
 
 | Architecture | Tag |
 | :----: | --- |
 | x86-64 | latest/unarr |
-| x86-64 | p7zip |
+| x86-64 | 7zip |
 | x86-64 | unarr-amd64 |
-| x86-64 | p7zip-amd64 |
+| x86-64 | 7zip-amd64 |
 | arm64 | unarr-arm64v8 |
-| arm64 | p7zip-arm64v8 |
+| arm64 | 7zip-arm64v8 |
 
 Here are some examples to help you get started creating a container from this image. If you are an UNRAID user you can access my [UNRAID YACReaderLibraryServer template](https://raw.githubusercontent.com/xthursdayx/docker-templates/master/xthursdayx/yacserver.xml) in Community Apps.
 
@@ -168,6 +168,8 @@ Here are the instructions for updating containers:
 * You can use [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended.
 
 ## Versions
+
+* **15.02.24:** - Update YACReader to 9.14.2, swith p7zip branch to 7zip and update to QT6 for the `7zip` image.
 
 * **06.02.24:** - Update YACReader to 9.14.1 and update to QT6 for the `unarr` image.
 

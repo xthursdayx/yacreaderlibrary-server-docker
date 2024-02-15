@@ -1,5 +1,5 @@
 ---
-# Builds our multi-arch Docker images for p7zip and unarr versions of YACReaderLibraryServer
+# Builds our multi-arch Docker images for 7zip and unarr versions of YACReaderLibraryServer
 name: Build and push images
 on:
   release:
@@ -140,7 +140,7 @@ jobs:
             ${{ steps.gh-meta.outputs.tags }}-arm64v8
           labels: ${{ steps.dh-meta.outputs.labels }}
 
-  build-p7zip-amd64:
+  build-7zip-amd64:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -171,14 +171,14 @@ jobs:
         with:
           push: true
           provenance: false
-          context: p7zip
-          file: p7zip/Dockerfile
+          context: 7zip
+          file: 7zip/Dockerfile
           platforms: linux/amd64
           tags: |
-            ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64
-            ${{ env.GHCR_SLUG }}:p7zip-amd64
+            ${{ env.DOCKERHUB_SLUG }}:7zip-amd64
+            ${{ env.GHCR_SLUG }}:7zip-amd64
 
-  build-p7zip-arm64v8:
+  build-7zip-arm64v8:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -212,15 +212,15 @@ jobs:
         with:
           push: true
           provenance: false
-          context: p7zip
-          file: p7zip/Dockerfile.aarch64
+          context: 7zip
+          file: 7zip/Dockerfile.aarch64
           platforms: linux/arm64/v8
           tags: |
-            ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
-            ${{ env.GHCR_SLUG }}:p7zip-arm64v8
+            ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
+            ${{ env.GHCR_SLUG }}:7zip-arm64v8
 
   push-manifest:
-    needs: [build-unarr-amd64, build-unarr-arm64v8, build-p7zip-amd64, build-p7zip-arm64v8]
+    needs: [build-unarr-amd64, build-unarr-arm64v8, build-7zip-amd64, build-7zip-arm64v8]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -273,8 +273,8 @@ jobs:
           docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
           docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:latest-amd64
           docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
-          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64
-          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
+          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:7zip-amd64
+          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
           docker pull --platform=linux/amd64 ${{ steps.dh-meta.outputs.tags }}-amd64
           docker pull --platform=linux/arm64 ${{ steps.dh-meta.outputs.tags }}-arm64v8
           docker manifest create ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-amd64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
@@ -285,10 +285,10 @@ jobs:
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:unarr-amd64
           docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
           docker manifest push ${{ env.DOCKERHUB_SLUG }}:unarr
-          docker manifest create ${{ env.DOCKERHUB_SLUG }}:p7zip ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:p7zip-amd64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:p7zip --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:p7zip-arm64v8
-          docker manifest push ${{ env.DOCKERHUB_SLUG }}:p7zip
+          docker manifest create ${{ env.DOCKERHUB_SLUG }}:7zip ${{ env.DOCKERHUB_SLUG }}:7zip-amd64 ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:7zip --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:7zip-amd64
+          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:7zip --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
+          docker manifest push ${{ env.DOCKERHUB_SLUG }}:7zip
           docker manifest create ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-amd64 ${{ steps.dh-meta.outputs.tags }}-arm64v8
           docker manifest annotate ${{ steps.dh-meta.outputs.tags }} --os linux --arch amd64 ${{ steps.dh-meta.outputs.tags }}-amd64
           docker manifest annotate ${{ steps.dh-meta.outputs.tags }} --os linux --arch arm64 --variant v8 ${{ steps.dh-meta.outputs.tags }}-arm64v8
@@ -301,18 +301,18 @@ jobs:
           docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:unarr-arm64v8
           docker pull --platform=linux/amd64 ${{ env.GHCR_SLUG }}:latest-amd64
           docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:latest-arm64v8
-          docker pull --platform=linux/amd64 ${{ env.GHCR_SLUG }}:p7zip-amd64
-          docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:p7zip-arm64v8
+          docker pull --platform=linux/amd64 ${{ env.GHCR_SLUG }}:7zip-amd64
+          docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:7zip-arm64v8
           docker pull --platform=linux/amd64 ${{ steps.gh-meta.outputs.tags }}-amd64
           docker pull --platform=linux/arm64 ${{ steps.gh-meta.outputs.tags }}-arm64v8
           docker manifest create -a ${{ env.GHCR_SLUG }}:unarr ${{ env.GHCR_SLUG }}:unarr-amd64 ${{ env.GHCR_SLUG }}:unarr-arm64v8
           docker manifest annotate ${{ env.GHCR_SLUG }}:unarr --os linux --arch amd64 ${{ env.GHCR_SLUG }}:unarr-amd64
           docker manifest annotate ${{ env.GHCR_SLUG }}:unarr --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:unarr-arm64v8
           docker manifest push ${{ env.GHCR_SLUG }}:unarr
-          docker manifest create ${{ env.GHCR_SLUG }}:p7zip ${{ env.GHCR_SLUG }}:p7zip-amd64 ${{ env.GHCR_SLUG }}:p7zip-arm64v8
-          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip --os linux --arch amd64 ${{ env.GHCR_SLUG }}:p7zip-amd64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:p7zip --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:p7zip-arm64v8
-          docker manifest push ${{ env.GHCR_SLUG }}:p7zip
+          docker manifest create ${{ env.GHCR_SLUG }}:7zip ${{ env.GHCR_SLUG }}:7zip-amd64 ${{ env.GHCR_SLUG }}:7zip-arm64v8
+          docker manifest annotate ${{ env.GHCR_SLUG }}:7zip --os linux --arch amd64 ${{ env.GHCR_SLUG }}:7zip-amd64
+          docker manifest annotate ${{ env.GHCR_SLUG }}:7zip --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:7zip-arm64v8
+          docker manifest push ${{ env.GHCR_SLUG }}:7zip
           docker manifest create ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-amd64 ${{ env.GHCR_SLUG }}:latest-arm64v8
           docker manifest annotate ${{ env.GHCR_SLUG }}:latest --os linux --arch amd64 ${{ env.GHCR_SLUG }}:latest-amd64
           docker manifest annotate ${{ env.GHCR_SLUG }}:latest --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:latest-arm64v8
