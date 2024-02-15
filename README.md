@@ -21,9 +21,9 @@ YACReaderLibraryServer makes it easy to run a home comics server to serve your c
 
 ## Setup Instructions:
 
-You can choose to install one of two versions of the YACReaderLibraryServer docker image, each compiled with a different compression backend - either [p7zip](https://sourceforge.net/projects/p7zip/files/p7zip/16.02/) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:pzip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`.
+You can choose to install one of two versions of the YACReaderLibraryServer docker image, each compiled with a different compression backend - either [7zip](https://launchpad.net/ubuntu/+source/7zip/23.01+dfsg-3) or [unarr](https://github.com/selmf/unarr). These two versions are handled via the Docker repository tags `xthursdayx/yacreaderlibrary-server-docker:7zip` or `xthursdayx/yacreaderlibrary-server-docker:unarr`.
 
-For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, so this version is the default installation. It should be noted, however, that as of [version 1.0.1](https://github.com/selmf/unarr/releases/tag/v1.0.1), `unarr` supports fewer formats than `p7zip`, notably RAR5. There is also some evidence that YACReaderLibraryServer compiled with `p7zip` may scan and create your comics library(s) faster than the version complied with `unarr`, so the choice is yours. In practice, the `unarr` rarely causes issues as the vast majority of comic books use either zip or RAR4 compression, which is handled nicely by this backend, and after the initial library creation, library updates proceed smoothly with either decompression backend.
+For the best stability and general quality, it is recommended that you install YACReaderLibraryServer with `unarr`, so this version is the default installation. It should be noted, however, that as of [version 1.0.1](https://github.com/selmf/unarr/releases/tag/v1.0.1), `unarr` supports fewer formats than `7zip`, notably RAR5. There is also some evidence that YACReaderLibraryServer compiled with `7zip` may scan and create your comics library(s) faster than the version complied with `unarr`, so the choice is yours. In practice, the `unarr` rarely causes issues as the vast majority of comic books use either zip or RAR4 compression, which is handled nicely by this backend, and after the initial library creation, library updates proceed smoothly with either decompression backend.
 
 If you would like to use the default `unarr` backend, then you do not need to add a tag to `xthursdayx/yacreaderlibrary-server-docker` since it will default to the `latest`/`unarr` tag.
 
@@ -168,6 +168,8 @@ Here are the instructions for updating containers:
 * You can use [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended.
 
 ## Versions
+
+* **15.02.24:** - Roll aarch64 images back to QT5 to temporarily fix CI build issue.
 
 * **15.02.24:** - Update YACReader to 9.14.2, swith p7zip branch to 7zip and update to QT6 for the `7zip` image.
 

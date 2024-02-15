@@ -16,39 +16,34 @@ RUN \
        build-essential \
        cmake \
        desktop-file-utils \
-       gcc \
        g++ \
        git \
-       qtchooser \
-       qt6-tools-dev \
-       qt6-base-dev-tools \
-       qmake6 \
-       qmake6-bin \
-       qt6-base-dev \
-       qt6-multimedia-dev \
-       qt6-tools-dev-tools \
-       libgl-dev \
-       qt6-l10n-tools \
-       libqt6opengl6-dev \
-       libunarr-dev \
-       qt6-declarative-dev \
-       libqt6svg6-dev \
-       libqt6core5compat6-dev \
        libbz2-dev \
        libglu1-mesa-dev \
        liblzma-dev \
-       libqt6gui6 \
-       libqt6multimedia6 \
-       libqt6network6 \
-       libqt6qml6 \
-       libqt6quickcontrols2-6 \
-       qt6-image-formats-plugins \
-       libqt6sql6 \
-       libqt6sql6-sqlite \
-       make \
-       p7zip-full \
-       sqlite3 \
+       libpoppler-qt5-dev \
+       libpoppler-qt5-1 \
+       libqt5core5a \
+       libqt5gui5 \
+       libqt5multimedia5 \
+       libqt5network5 \
+       libqt5opengl5-dev \
+       libqt5qml5 \
+       libqt5quickcontrols2-5 \
+       libqt5script5 \
+       libqt5sql5-sqlite \
+       libqt5sql5 \
+       libqt5svg5 \
        libsqlite3-dev \
+       make \
+       mercurial \
+       qtbase5-dev \
+       qt5-image-formats-plugins \
+       qt5-qmake \
+       qtdeclarative5-dev \
+       qtmultimedia5-dev \
+       qtscript5-dev \
+       sqlite3 \
        unzip \
        wget \
        zlib1g-dev && \
@@ -60,26 +55,19 @@ RUN \
     cmake -DENABLE_7Z=ON .. && \
     make && \
     make install && \
-# fix qtchooser qmake install - https://askubuntu.com/questions/1460242/ubuntu-22-04-with-qt6-qmake-could-not-find-a-qt-installation-of
-    qtchooser -install qt6 $(which qmake6) && \
-    export QT_SELECT=qt6 && \
 # build yacreaderlibraryserver
     git clone -b master --single-branch https://github.com/YACReader/yacreader.git /src/git && \
     cd /src/git && \
     git checkout $YACR_VERSION && \
     cd /src/git/YACReaderLibraryServer && \
-    qtchooser -list-versions && \
-    qmake6 PREFIX=/app CONFIG+="unarr no_pdf server_standalone" YACReaderLibraryServer.pro && \
-    qmake6 -v && \
+    qmake PREFIX=/app CONFIG+="unarr server_standalone" YACReaderLibraryServer.pro && \
     make  && \
     make install && \
 # clean up
     cd / && \
     apt-get clean && \
-    apt-get purge -y build-essential cmake g++ gcc git make qmake6 qtchooser unzip wget && \
+    apt-get purge -y build-essential cmake g++ git make qt5-qmake unzip wget && \
     apt-get -y autoremove && \
-    apt-get install -y --no-install-recommends \
-       libqt6core5compat6-dev && \
     rm -rf \
        /src \
        /tmp/* \
