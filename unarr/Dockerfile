@@ -1,7 +1,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 
 # package versions
-ARG YACR_VERSION="9.14.1"
+ARG YACR_VERSION="9.14.2"
 
 # env variables
 ARG DEBIAN_FRONTEND="noninteractive"
