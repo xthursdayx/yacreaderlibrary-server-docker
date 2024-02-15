@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
+FROM ghcr.io/linuxserver/baseimage-ubuntu:arm64v8-jammy
 
 # package versions
 ARG YACR_VERSION="9.14.2"
@@ -14,7 +14,6 @@ RUN \
     apt-get update && \
     apt-get install -y --no-install-recommends \
        build-essential \
-       cmake \
        desktop-file-utils \
        gcc \
        g++ \
@@ -52,31 +51,38 @@ RUN \
        unzip \
        wget \
        zlib1g-dev && \
-# install unarr libraries
-#    git clone -b master --single-branch https://github.com/selmf/unarr.git /tmp/unarr && \
-#    cd /tmp/unarr && \
-#    mkdir -p build && \
-#    cd build && \
-#    cmake -DENABLE_7Z=ON .. && \
-#    make && \
-#    make install && \
-# fix qtchooser qmake install - https://askubuntu.com/questions/1460242/ubuntu-22-04-with-qt6-qmake-could-not-find-a-qt-installation-of
-    qtchooser -install qt6 $(which qmake6) && \
-    export QT ELECT=qt6 && \
-# build yacreaderlibraryserver
+# clone yacreaderlibraryserver
     git clone -b master --single-branch https://github.com/YACReader/yacreader.git /src/git && \
     cd /src/git && \
     git checkout $YACR_VERSION && \
+# install 7zip libraries
+    cd /src/git/compressed_archive && \
+    wget "https://github.com/xthursdayx/yacreader-7z-deps/blob/main/7z2301-arm64-src.7z?raw=true" -O /src/git/compressed_archive/7z2301-arm64-src.7z && \
+    7z x /src/git/compressed_archive/7z2301-arm64-src.7z -o/src/git/compressed_archive/lib7zip && \
+    apt-get remove -y \
+        p7zip-full \
+        p7zip && \
+    #rm -rf /usr/bin/7zr && \
+    #rm -rf /usr/lib/p7zip && \
+    cp /src/git/compressed_archive/lib7zip/debian/7zip/usr/bin/7z.7zip /usr/bin/7z && \
+    cp /src/git/compressed_archive/lib7zip/debian/7zip/usr/bin/7za.7zip /usr/bin/7za && \
+    cp /src/git/compressed_archive/lib7zip/debian/7zip/usr/bin/7zr.7zip /usr/bin/7zr && \
+    cp /src/git/compressed_archive/lib7zip/debian/7zip/usr/bin/7zz /usr/bin/7zz && \
+    cp -r /src/git/compressed_archive/lib7zip/debian/7zip/usr/lib/7zip /usr/lib/ && \
+# fix qtchooser qmake install - https://askubuntu.com/questions/1460242/ubuntu-22-04-with-qt6-qmake-could-not-find-a-qt-installation-of
+    qtchooser -install qt6 $(which qmake6) && \
+    export QT ELECT=qt6 && \
+# build yacrederlibraryserver
     cd /src/git/YACReaderLibraryServer && \
     qtchooser -list-versions && \
-    qmake6 PREFIX=/app CONFIG+="unarr no_pdf server_standalone" YACReaderLibraryServer.pro && \
+    qmake6 PREFIX=/app CONFIG+="7zip no_pdf server_standalone" YACReaderLibraryServer.pro && \
     qmake6 -v && \
     make  && \
     make install && \
-# clean up
+# clean up    
     cd / && \
     apt-get clean && \
-    apt-get purge -y build-essential cmake g++ gcc git make qmake6 qtchooser unzip wget && \
+    apt-get purge -y build-essential g++ gcc git make qmake6 qtchooser unzip wget && \
     apt-get -y autoremove && \
     apt-get install -y --no-install-recommends \
        libqt6core5compat6-dev && \
