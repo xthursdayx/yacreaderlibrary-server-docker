@@ -1,9 +1,16 @@
 ---
-# Builds our multi-arch Docker images for 7zip and unarr versions of YACReaderLibraryServer
+# Builds multi-arch (amd64 + arm64) images for each decompression backend from
+# the single root Dockerfile. Buildx pushes a proper multi-arch manifest itself,
+# so no per-arch tags or manual `docker manifest` steps are needed.
 name: Build and push images
 on:
   release:
-    types: [published]  
+    types: [published]
+  pull_request:
+    paths:
+      - Dockerfile
+      - root/**
+      - .github/workflows/docker-build-and-publish.yml
   workflow_dispatch:
 
 env:
@@ -11,248 +18,52 @@ env:
   GHCR_SLUG: ghcr.io/xthursdayx/yacreaderlibrary-server-docker
 
 jobs:
-  build-unarr-amd64:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v7
-        
-      - name: Docker meta
-        id: dh-meta
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ${{ env.DOCKERHUB_SLUG }}
-          flavor: latest=false
-          tags: |
-            type=ref,event=tag
-
-      - name: Docker meta
-        id: gh-meta
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ${{ env.GHCR_SLUG }}
-          flavor: latest=false
-          tags: |
-            type=ref,event=tag
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Dockerhub
-        uses: docker/login-action@v4
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push container image
-        uses: docker/build-push-action@v5
-        with:
-          context: unarr
-          file: unarr/Dockerfile
-          platforms: linux/amd64
-          push: true
-          provenance: false
-          tags: |
-            ${{ env.DOCKERHUB_SLUG }}:unarr-amd64
-            ${{ env.DOCKERHUB_SLUG }}:latest-amd64
-            ${{ env.GHCR_SLUG }}:unarr-amd64
-            ${{ env.GHCR_SLUG }}:latest-amd64
-            ${{ steps.dh-meta.outputs.tags }}-amd64
-            ${{ steps.gh-meta.outputs.tags }}-amd64
-          labels: ${{ steps.dh-meta.outputs.labels }}
-
-  build-unarr-arm64v8:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Docker meta
-        id: dh-meta
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ${{ env.DOCKERHUB_SLUG }}
-          flavor: latest=false
-          tags: |
-            type=ref,event=tag
-
-      - name: Docker meta
-        id: gh-meta
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ${{ env.GHCR_SLUG }}
-          flavor: latest=false
-          tags: |
-            type=ref,event=tag
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Dockerhub
-        uses: docker/login-action@v4
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push container image
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          provenance: false
-          context: unarr
-          file: unarr/Dockerfile.aarch64
-          platforms: linux/arm64/v8
-          tags: |
-            ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
-            ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
-            ${{ env.GHCR_SLUG }}:unarr-arm64v8
-            ${{ env.GHCR_SLUG }}:latest-arm64v8
-            ${{ steps.dh-meta.outputs.tags }}-arm64v8
-            ${{ steps.gh-meta.outputs.tags }}-arm64v8
-          labels: ${{ steps.dh-meta.outputs.labels }}
-
-  build-7zip-amd64:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        backend: [7zip, libarchive]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Read YACReader version from Dockerfile
+        id: yacr
+        run: echo "version=$(grep -oP '^ARG YACR_VERSION="\K[^"]+' Dockerfile)" >> "$GITHUB_OUTPUT"
 
-      - name: Login to Dockerhub
-        uses: docker/login-action@v4
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push container image
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          provenance: false
-          context: 7zip
-          file: 7zip/Dockerfile
-          platforms: linux/amd64
-          tags: |
-            ${{ env.DOCKERHUB_SLUG }}:7zip-amd64
-            ${{ env.GHCR_SLUG }}:7zip-amd64
-
-  build-7zip-arm64v8:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Dockerhub
-        uses: docker/login-action@v4
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push container image
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          provenance: false
-          context: 7zip
-          file: 7zip/Dockerfile.aarch64
-          platforms: linux/arm64/v8
-          tags: |
-            ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
-            ${{ env.GHCR_SLUG }}:7zip-arm64v8
-
-  push-manifest:
-    needs: [build-unarr-amd64, build-unarr-arm64v8, build-7zip-amd64, build-7zip-arm64v8]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
+      # Tags produced:
+      #   7zip:       :latest  :10.4.0  :7zip  :7zip-10.4.0         (+ :<release-tag>, :<release-tag>-7zip)
+      #   libarchive: :libarchive  :libarchive-10.4.0  :unarr     (+ :<release-tag>-libarchive)
+      # :unarr is kept as a transition alias so existing users don't get stuck on 9.x.
       - name: Docker meta
-        id: dh-meta
+        id: meta
         uses: docker/metadata-action@v6
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
-          flavor: latest=false
-          tags: |
-            type=ref,event=tag
-
-      - name: Docker meta
-        id: gh-meta
-        uses: docker/metadata-action@v6
-        with:
-          images: |
             ${{ env.GHCR_SLUG }}
           flavor: latest=false
           tags: |
-            type=ref,event=tag
+            type=raw,value=${{ matrix.backend }}
+            type=raw,value=${{ matrix.backend }}-${{ steps.yacr.outputs.version }}
+            type=raw,value=latest,enable=${{ matrix.backend == '7zip' }}
+            type=raw,value=${{ steps.yacr.outputs.version }},enable=${{ matrix.backend == '7zip' }}
+            type=raw,value=unarr,enable=${{ matrix.backend == 'libarchive' }}
+            type=ref,event=tag,enable=${{ matrix.backend == '7zip' }}
+            type=ref,event=tag,suffix=-${{ matrix.backend }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-    
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Dockerhub
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v4
         with:
           registry: docker.io
@@ -260,64 +71,22 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Create manifest for multi-arch images @ Docker Hub
-        run: |
-          # get artifacts from previous steps and integrate into one multi-arch manifest
-          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:unarr-amd64
-          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
-          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:latest-amd64
-          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
-          docker pull --platform=linux/amd64 ${{ env.DOCKERHUB_SLUG }}:7zip-amd64
-          docker pull --platform=linux/arm64 ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
-          docker pull --platform=linux/amd64 ${{ steps.dh-meta.outputs.tags }}-amd64
-          docker pull --platform=linux/arm64 ${{ steps.dh-meta.outputs.tags }}-arm64v8
-          docker manifest create ${{ env.DOCKERHUB_SLUG }}:latest ${{ env.DOCKERHUB_SLUG }}:latest-amd64 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:latest-amd64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:latest --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:latest-arm64v8
-          docker manifest push ${{ env.DOCKERHUB_SLUG }}:latest        
-          docker manifest create ${{ env.DOCKERHUB_SLUG }}:unarr ${{ env.DOCKERHUB_SLUG }}:unarr-amd64 --amend ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8 --amend
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:unarr-amd64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:unarr --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:unarr-arm64v8
-          docker manifest push ${{ env.DOCKERHUB_SLUG }}:unarr
-          docker manifest create ${{ env.DOCKERHUB_SLUG }}:7zip ${{ env.DOCKERHUB_SLUG }}:7zip-amd64 ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:7zip --os linux --arch amd64 ${{ env.DOCKERHUB_SLUG }}:7zip-amd64
-          docker manifest annotate ${{ env.DOCKERHUB_SLUG }}:7zip --os linux --arch arm64 --variant v8 ${{ env.DOCKERHUB_SLUG }}:7zip-arm64v8
-          docker manifest push ${{ env.DOCKERHUB_SLUG }}:7zip
-          docker manifest create ${{ steps.dh-meta.outputs.tags }} ${{ steps.dh-meta.outputs.tags }}-amd64 ${{ steps.dh-meta.outputs.tags }}-arm64v8
-          docker manifest annotate ${{ steps.dh-meta.outputs.tags }} --os linux --arch amd64 ${{ steps.dh-meta.outputs.tags }}-amd64
-          docker manifest annotate ${{ steps.dh-meta.outputs.tags }} --os linux --arch arm64 --variant v8 ${{ steps.dh-meta.outputs.tags }}-arm64v8
-          docker manifest push ${{ steps.dh-meta.outputs.tags }}
-          
 
-      - name: Create manifest for multi-arch images @ GHCR
-        run: |
-          docker pull --platform=linux/amd64 ${{ env.GHCR_SLUG }}:unarr-amd64
-          docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:unarr-arm64v8
-          docker pull --platform=linux/amd64 ${{ env.GHCR_SLUG }}:latest-amd64
-          docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:latest-arm64v8
-          docker pull --platform=linux/amd64 ${{ env.GHCR_SLUG }}:7zip-amd64
-          docker pull --platform=linux/arm64 ${{ env.GHCR_SLUG }}:7zip-arm64v8
-          docker pull --platform=linux/amd64 ${{ steps.gh-meta.outputs.tags }}-amd64
-          docker pull --platform=linux/arm64 ${{ steps.gh-meta.outputs.tags }}-arm64v8
-          docker manifest create -a ${{ env.GHCR_SLUG }}:unarr ${{ env.GHCR_SLUG }}:unarr-amd64 ${{ env.GHCR_SLUG }}:unarr-arm64v8
-          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr --os linux --arch amd64 ${{ env.GHCR_SLUG }}:unarr-amd64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:unarr --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:unarr-arm64v8
-          docker manifest push ${{ env.GHCR_SLUG }}:unarr
-          docker manifest create ${{ env.GHCR_SLUG }}:7zip ${{ env.GHCR_SLUG }}:7zip-amd64 ${{ env.GHCR_SLUG }}:7zip-arm64v8
-          docker manifest annotate ${{ env.GHCR_SLUG }}:7zip --os linux --arch amd64 ${{ env.GHCR_SLUG }}:7zip-amd64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:7zip --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:7zip-arm64v8
-          docker manifest push ${{ env.GHCR_SLUG }}:7zip
-          docker manifest create ${{ env.GHCR_SLUG }}:latest ${{ env.GHCR_SLUG }}:latest-amd64 ${{ env.GHCR_SLUG }}:latest-arm64v8
-          docker manifest annotate ${{ env.GHCR_SLUG }}:latest --os linux --arch amd64 ${{ env.GHCR_SLUG }}:latest-amd64
-          docker manifest annotate ${{ env.GHCR_SLUG }}:latest --os linux --arch arm64 --variant v8 ${{ env.GHCR_SLUG }}:latest-arm64v8
-          docker manifest push ${{ env.GHCR_SLUG }}:latest
-          docker manifest create ${{ steps.gh-meta.outputs.tags }} ${{ steps.gh-meta.outputs.tags }}-amd64 ${{ steps.gh-meta.outputs.tags }}-arm64v8
-          docker manifest annotate ${{ steps.gh-meta.outputs.tags }} --os linux --arch amd64 ${{ steps.gh-meta.outputs.tags }}-amd64
-          docker manifest annotate ${{ steps.gh-meta.outputs.tags }} --os linux --arch arm64 --variant v8 ${{ steps.gh-meta.outputs.tags }}-arm64v8
-          docker manifest push ${{ steps.gh-meta.outputs.tags }} 
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            DECOMPRESSION_BACKEND=${{ matrix.backend }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.backend }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.backend }}

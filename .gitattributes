@@ -58,3 +58,9 @@ Dockerfile text eol=lf
 *.pdf binary
 *.db binary
 *.xz binary
+
+# Skip “indent with spaces”
+*.yml       whitespace=-indent-with-non-tab
+*.yaml      whitespace=-indent-with-non-tab
+Dockerfile  whitespace=-indent-with-non-tab
+*.md        whitespace=-indent-with-non-tab
