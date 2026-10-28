@@ -41,7 +41,6 @@ if [[ "${time32}" == "1970" || "${time32}" == "1969" ]] && [ "$(uname -m)" == "a
     sleep infinity
 fi
 
-lsiown abc:abc /app
 lsiown abc:abc /config
 lsiown abc:abc /defaults
 
