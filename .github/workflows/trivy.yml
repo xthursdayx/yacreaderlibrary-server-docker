@@ -1,28 +1,27 @@
 name: Trivy Scanner
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  schedule:
+    - cron: '30 6 * * 1'
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Scan
-    runs-on: ubuntu-20.04
+  scan:
+    name: Scan published image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Run Trivy vulnerability scanner in repo mode
+      - name: Run Trivy vulnerability scanner on the image
+        # consider pinning this to a release tag or commit SHA instead of @master
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
+          scan-type: 'image'
+          image-ref: 'ghcr.io/xthursdayx/yacreaderlibrary-server-docker:latest'
           ignore-unfixed: true
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
+          format: 'sarif'
           output: 'trivy-results.sarif'
-          severity: 'CRITICAL'
+          severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
