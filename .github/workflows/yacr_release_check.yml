@@ -15,7 +15,7 @@ jobs:
         uses: reviewdog/action-depup@v1
         id: depup
         with:
-          file: unarr/Dockerfile
+          file: Dockerfile
           version_name: YACR_VERSION
           repo: YACReader/yacreader
 
