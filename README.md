@@ -99,6 +99,8 @@ When using volumes (`-v` flags) permissions issues can arise between the host OS
 
 Ensure any mapped volume directories on your host machine are owned by the same user you specify and you will avoid any permissions issues.
 
+Your comics only need to be **readable** by this user. The container takes ownership of `/config` and of the `.yacreaderlibrary` folders where library data is stored, but it never changes the ownership of your comics.
+
 In this instance `PUID=99` and `PGID=100`, to find yours using the following command:
 
 ```bash
@@ -108,26 +110,37 @@ In this instance `PUID=99` and `PGID=100`, to find yours using the following com
 
 ## Usage Instructions:
 
-#### To create a new YACReader comics library run the  following command from the CLI on your host machine, changing `<library-name>` to whatever you want your library to be called:
+Run these commands from the CLI on your host machine. The `-u abc` makes them run as the same user as the server, so the library files they create stay writable by it.
+
+#### To create a new YACReader comics library (change `<library-name>` to whatever you want your library to be called):
 ````
-docker exec YACReaderLibraryServer YACReaderLibraryServer create-library <library-name> /comics
+docker exec -u abc YACReaderLibraryServer YACReaderLibraryServer create-library <library-name> /comics
 ````
 #### To add an existing YACReader library:
 ````
-docker exec YACReaderLibraryServer YACReaderLibraryServer add-library <library-name> /comics
+docker exec -u abc YACReaderLibraryServer YACReaderLibraryServer add-library <library-name> /comics
 ````
 #### To update your YACReader library (e.g. when you've added new comics):
 ````
-docker exec YACReaderLibraryServer YACReaderLibraryServer update-library /comics
+docker exec -u abc YACReaderLibraryServer YACReaderLibraryServer update-library /comics
 ````
 #### To list all existing YACReader libraries
 ````
-docker exec YACReaderLibraryServer YACReaderLibraryServer list-libraries
+docker exec -u abc YACReaderLibraryServer YACReaderLibraryServer list-libraries
 ````
 #### To remove a YACReader library
 ````
-docker exec YACReaderLibraryServer YACReaderLibraryServer remove-library <library-name>
+docker exec -u abc YACReaderLibraryServer YACReaderLibraryServer remove-library <library-name>
 ````
+Other commands (`repair-library`, `backup-library`, `restore-library`, `rescan-xml-info` and more) are listed by running `docker exec -u abc YACReaderLibraryServer YACReaderLibraryServer --help`.
+
+#### Keeping libraries up to date automatically
+
+Instead of running `update-library` by hand, open `http://SERVERIP:8080/webui/settings` and turn on updates at startup, periodically, or at a set time. You can also choose there whether ComicInfo.xml metadata is imported. Library updates pause writes to the database, so don't schedule them for a time when you're likely to be reading.
+
+#### Health status
+
+The image has a built-in healthcheck, so `docker ps`, Compose and the Unraid dashboard show whether the server is actually answering requests (`healthy`) rather than just running.
 
 ## Accessing YACReaderLibraryServer 
 
@@ -164,6 +177,7 @@ Here are the instructions for updating containers:
 
 ## Versions
 
+* **29.10.26:** - Add a healthcheck, stop changing ownership of comic files, build arm64 natively and smoke-test every image before publishing.
 * **23.10.26:** - Update YACReader to 10.4.0 (CMake build, Qt6, rebase to Ubuntu 26.04). Single multi-stage Dockerfile for all variants; `7zip` becomes the default and `libarchive` replaces `unarr`.
 
 * **15.02.24:** - Roll aarch64 images back to QT5 to temporarily fix CI build issue.
