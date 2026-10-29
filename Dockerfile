@@ -135,3 +135,7 @@ ENV APPNAME="YACReaderLibraryServer" \
 
 EXPOSE 8080
 VOLUME ["/config", "/comics"]
+
+# /v2/version is a tiny unauthenticated endpoint and creates no session.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=5s --retries=3 \
+    CMD curl -fsS -o /dev/null http://localhost:8080/v2/version || exit 1
