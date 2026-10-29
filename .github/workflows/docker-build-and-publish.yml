@@ -1,7 +1,8 @@
 ---
-# Builds multi-arch (amd64 + arm64) images for each decompression backend from
-# the single root Dockerfile. Buildx pushes a proper multi-arch manifest itself,
-# so no per-arch tags or manual `docker manifest` steps are needed.
+# Builds each decompression backend for amd64 and arm64 on native runners
+# (no QEMU), smoke-tests every image, then pushes by digest and stitches the
+# per-arch images into multi-arch tags. Nothing is pushed unless the smoke test
+# passes, and nothing is pushed for pull requests.
 name: Build and push images
 on:
   release:
@@ -10,6 +11,7 @@ on:
     paths:
       - Dockerfile
       - root/**
+      - .github/scripts/smoke-test.sh
       - .github/workflows/docker-build-and-publish.yml
   workflow_dispatch:
 
@@ -19,7 +21,103 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: build (${{ matrix.backend }}, ${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        backend: [7zip, libarchive]
+        arch: [amd64, arm64]
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Docker meta (labels)
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: |
+            ${{ env.DOCKERHUB_SLUG }}
+            ${{ env.GHCR_SLUG }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build test image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/${{ matrix.arch }}
+          build-args: |
+            DECOMPRESSION_BACKEND=${{ matrix.backend }}
+          labels: ${{ steps.meta.outputs.labels }}
+          load: true
+          tags: yacr-smoke:${{ matrix.backend }}
+          cache-from: type=gha,scope=${{ matrix.backend }}-${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.backend }}-${{ matrix.arch }}
+
+      - name: Smoke test
+        run: .github/scripts/smoke-test.sh yacr-smoke:${{ matrix.backend }}
+
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v4
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Same inputs as the test build, so this is served from the build cache.
+      - name: Push by digest
+        id: push
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/${{ matrix.arch }}
+          build-args: |
+            DECOMPRESSION_BACKEND=${{ matrix.backend }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,"name=${{ env.DOCKERHUB_SLUG }},${{ env.GHCR_SLUG }}",push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=gha,scope=${{ matrix.backend }}-${{ matrix.arch }}
+
+      - name: Export digest
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          digest="${{ steps.push.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: digests-${{ matrix.backend }}-${{ matrix.arch }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    name: publish (${{ matrix.backend }})
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -30,6 +128,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
+
+      - name: Download digests
+        uses: actions/download-artifact@v8
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-${{ matrix.backend }}-*
+          merge-multiple: true
 
       - name: Read YACReader version from Dockerfile
         id: yacr
@@ -56,14 +161,10 @@ jobs:
             type=ref,event=tag,enable=${{ matrix.backend == '7zip' }}
             type=ref,event=tag,suffix=-${{ matrix.backend }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
       - name: Login to Docker Hub
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v4
         with:
           registry: docker.io
@@ -71,22 +172,21 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          build-args: |
-            DECOMPRESSION_BACKEND=${{ matrix.backend }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=${{ matrix.backend }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.backend }}
+      - name: Create multi-arch tags
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          for slug in "$DOCKERHUB_SLUG" "$GHCR_SLUG"; do
+            tags=$(jq -cr --arg s "$slug:" '.tags | map(select(startswith($s))) | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON")
+            # shellcheck disable=SC2046,SC2086
+            docker buildx imagetools create $tags $(printf "${slug}@sha256:%s " *)
+          done
+
+      - name: Inspect
+        run: |
+          docker buildx imagetools inspect "${GHCR_SLUG}:${{ matrix.backend }}"
