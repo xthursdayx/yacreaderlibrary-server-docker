@@ -14,4 +14,8 @@ fi
 # permissions
 find /config -not \( -user abc -and -group abc \) -exec chown abc:abc {} +
 find /defaults -not \( -user abc -and -group abc \) -exec chown abc:abc {} +
-find /comics -not \( -user abc -and -group abc \) -exec chown abc:abc {} +
+# Only take ownership of the library data folders the server writes to, never
+# the comics themselves (mounts may be shared with other apps or read-only).
+find /comics -type d -name .yacreaderlibrary -prune \
+	-exec chown -R abc:abc {} + 2>/dev/null || \
+	echo "**** could not change ownership of library data in /comics; set PUID/PGID to the owner of your comics ****"
