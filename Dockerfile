@@ -8,7 +8,7 @@
 ARG DECOMPRESSION_BACKEND="7zip"
 
 # YACReader release tag (bumped automatically by the depup workflow)
-ARG YACR_VERSION="10.4.0"
+ARG YACR_VERSION="10.5.0"
 
 # YACReader 10.x needs CMake >= 3.25 and Qt >= 6.4 (server-only build), so Jammy
 # no longer works. Resolute (26.04 LTS) is what upstream's own image uses.
